@@ -1,4 +1,7 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {
+  PayloadAction
+} from "@reduxjs/toolkit";
+import { createSliceApp } from "../slice";
 
 interface CounterState {
   value: number;
@@ -6,7 +9,7 @@ interface CounterState {
 
 const initialState: CounterState = { value: 0 };
 
-const counterSlice1 = createSlice({
+const counterSlice1 = createSliceApp({
   name: "counter1",
   initialState,
   reducers: {
@@ -21,4 +24,5 @@ const counterSlice1 = createSlice({
     },
   },
 });
+
 export default counterSlice1;
