@@ -1,21 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { initState } from "@/store/initState";
+import { ReduxProvider } from "@/store/providers";
 import { Suspense } from "react";
 import CounterClient from "./CounterClient";
 
-async function fetchData() {
-  return 10;
-}
-
 export default async function CounterPage() {
-  const initialCount = await fetchData();
-
+  const initialCount = await initState();
   return (
-    <div>
-      <h1>Counter Page</h1>
-      <Suspense fallback={<p>Loading...</p>}>
-        <CounterClient initialCount={initialCount} />
-      </Suspense>
-    </div>
+    <ReduxProvider preloadedState={initialCount}>
+      <div>
+        <h1>Counter Page</h1>
+        <Suspense fallback={<p>Loading...</p>}>
+          <CounterClient />
+        </Suspense>
+      </div>
+    </ReduxProvider>
   );
 }
-
