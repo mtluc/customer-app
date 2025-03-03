@@ -1,5 +1,5 @@
-import Counter from "./counter/page";
+import Home from '@/features/home/home'
 
 export default function HomePage() {
-  return <Counter />;
+  return <Home />
 }

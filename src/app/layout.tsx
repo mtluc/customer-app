@@ -1,18 +1,18 @@
-import { ReduxProvider } from "@/store/providers";
+import { ReduxProvider } from '@/store/providers'
 
-import "@/app/globals.css";
-import { initState } from "@/store/initState";
-import { Header } from "@/components/layout/header/header";
-import { Nav } from "@/components/layout/nav/navs";
-import { Footer } from "@/components/layout/footer/footer";
-import Head from "next/head";
+import '@/app/globals.css'
+import { initState } from '@/store/initState'
+import { Header } from '@/components/layout/header/header'
+import { Nav } from '@/components/layout/nav/navs'
+import { Footer } from '@/components/layout/footer/footer'
+import Head from 'next/head'
 
 export default async function RootLayout({
-  children,
+  children
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
-  const initialCount = await initState();
+  const initialCount = await initState()
   return (
     <html lang="vi">
       <Head>
@@ -26,10 +26,10 @@ export default async function RootLayout({
           <Header>
             <Nav />
           </Header>
-          <main className="min-h-screen">{children}</main>
+          <main className="mb-16">{children}</main>
           <Footer />
         </ReduxProvider>
       </body>
     </html>
-  );
+  )
 }

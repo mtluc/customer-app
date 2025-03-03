@@ -1,30 +1,30 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-"use client";
+'use client'
 
-import { Button } from "@/components/ui/button";
-import appSlice, { DeviceMode, updateState } from "@/store/slices/appSlice";
-import counterSlice from "@/store/slices/counterSlice/counterSlice";
-import counterSlice1 from "@/store/slices/counterSlice/counterSlice1";
-import { injectReducer, useSelectSlice } from "@/store/store";
-import { memo, useCallback } from "react";
-import { useDispatch } from "react-redux";
-const MyButton = memo(Button);
+import { Button } from '@/components/ui/button'
+import appSlice, { DeviceMode, updateState } from '@/store/slices/appSlice'
+import counterSlice from '@/store/slices/counterSlice/counterSlice'
+import counterSlice1 from '@/store/slices/counterSlice/counterSlice1'
+import { injectReducer, useSelectSlice } from '@/store/store'
+import { memo, useCallback } from 'react'
+import { useDispatch } from 'react-redux'
+const MyButton = memo(Button)
 
 export default function CounterClient({ countInit }: { countInit: number }) {
-  injectReducer(counterSlice, { value: countInit });
-  injectReducer(counterSlice1);
-  const dispatch = useDispatch<any>();
-  const count = useSelectSlice(counterSlice, (state) => state.value);
-  const device = useSelectSlice(appSlice, (state) => state.device);
-  const count1 = useSelectSlice(counterSlice1, (state) => state.value);
+  injectReducer(counterSlice, { value: countInit })
+  injectReducer(counterSlice1)
+  const dispatch = useDispatch<any>()
+  const count = useSelectSlice(counterSlice, (state) => state.value)
+  const device = useSelectSlice(appSlice, (state) => state.device)
+  const count1 = useSelectSlice(counterSlice1, (state) => state.value)
 
   const clickFn = useCallback(() => {
-    dispatch(counterSlice.instance.actions.increment());
-  }, [dispatch]);
+    dispatch(counterSlice.instance.actions.increment())
+  }, [dispatch])
 
   const clickChangeDevice = useCallback(() => {
-    dispatch(updateState({ device: DeviceMode.desktop }));
-  }, [dispatch]);
+    dispatch(updateState({ device: DeviceMode.desktop }))
+  }, [dispatch])
 
   return (
     <div>
@@ -36,5 +36,5 @@ export default function CounterClient({ countInit }: { countInit: number }) {
         <MyButton onClick={clickChangeDevice}>Change device</MyButton>;
       </div>
     </div>
-  );
+  )
 }

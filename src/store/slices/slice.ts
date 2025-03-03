@@ -4,12 +4,12 @@ import {
   CreateSliceOptions,
   Slice,
   SliceCaseReducers,
-  SliceSelectors,
-} from "@reduxjs/toolkit";
+  SliceSelectors
+} from '@reduxjs/toolkit'
 
 export interface SliceApp<ST = any, S extends Slice<ST> = Slice<ST>> {
-  instance: S;
-  extraReducers?: (builder: ActionReducerMapBuilder<ST>) => void;
+  instance: S
+  extraReducers?: (builder: ActionReducerMapBuilder<ST>) => void
 }
 
 export function createSliceApp<
@@ -23,6 +23,6 @@ export function createSliceApp<
 ): SliceApp<State, Slice<State, CaseReducers, Name, ReducerPath, Selectors>> {
   return {
     instance: createSlice(options),
-    extraReducers: options.extraReducers,
-  };
+    extraReducers: options.extraReducers
+  }
 }

@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { fetchData } from "@/store/initState";
-import { Suspense } from "react";
-import CounterClient from "./CounterClient";
+import { fetchData } from '@/store/initState'
+import { Suspense } from 'react'
+import CounterClient from './CounterClient'
 
 export default async function CounterPage() {
-  const a = await fetchData();
+  const a = await fetchData()
   return (
     <div>
       <h1>Counter Page</h1>
@@ -12,5 +11,5 @@ export default async function CounterPage() {
         <CounterClient countInit={a} />
       </Suspense>
     </div>
-  );
+  )
 }

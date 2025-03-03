@@ -1,7 +1,7 @@
-import { headers } from "next/headers";
+import { headers } from 'next/headers'
 
 export async function fetchData() {
-  return 11;
+  return 11
 }
 
 /**
@@ -12,29 +12,29 @@ export async function fetchData() {
 export const initState = async (
   pr?: Promise<Partial<any>>
 ): Promise<Partial<any>> => {
-  const [device, otherData] = await Promise.all([getDevice(), pr]);
+  const [device, otherData] = await Promise.all([getDevice(), pr])
   return {
     app: {
-      device: device,
+      device: device
     },
-    ...(otherData ?? {}),
-  };
-};
+    ...(otherData ?? {})
+  }
+}
 
 /**
  * Đọc thông tin thiết bị từ user-agent
  * | chỉ dùng trên server
  * */
 async function getDevice() {
-  const userAgent = (await headers()).get("user-agent") || "";
+  const userAgent = (await headers()).get('user-agent') || ''
 
   const isMobile =
     /Android.*Mobile|iPhone|iPad|iPod|BlackBerry|Opera Mini|IEMobile|WPDesktop/i.test(
       userAgent
-    );
+    )
 
   if (!isMobile) {
-    return "desktop";
+    return 'desktop'
   }
-  return "mobile";
+  return 'mobile'
 }
