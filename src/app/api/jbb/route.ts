@@ -17,7 +17,23 @@ export async function OPTIONS() {
     );
 }
 
-export async function ALL(req: Request) {
+export async function GET(req: Request) {
+    return handleRequest(req);
+}
+
+export async function POST(req: Request) {
+    return handleRequest(req);
+}
+
+export async function PUT(req: Request) {
+    return handleRequest(req);
+}
+
+export async function DELETE(req: Request) {
+    return handleRequest(req);
+}
+
+async function handleRequest(req: Request) {
     try {
         const method = req.method; // ✅ Lấy phương thức HTTP (GET, POST, PUT, DELETE,...)
 
