@@ -1,5 +1,5 @@
-import Image from "next/image"
-import { topCategories } from "./top-categories.data"
+import Image from 'next/image'
+import { topCategories } from './top-categories.data'
 
 const TopCategories = () => {
   return (
@@ -9,8 +9,17 @@ const TopCategories = () => {
         <div className="-mx-1 flex flex-wrap py-2">
           {topCategories.map((item) => {
             return (
-              <div key={item.id} className="w-1/4 md:w-1/5 lg:w-1/6 xl:w-1/12 text-center">
-                <Image src={item.img} alt={item.name} width={69} height={69} className="m-auto"/>
+              <div
+                key={item.id}
+                className="w-1/4 text-center md:w-1/5 lg:w-1/6"
+              >
+                <Image
+                  src={item.img}
+                  alt={item.name}
+                  width={69}
+                  height={69}
+                  className="m-auto"
+                />
                 <div className="px-2">{item.name}</div>
               </div>
             )

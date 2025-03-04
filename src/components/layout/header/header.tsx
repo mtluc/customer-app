@@ -6,7 +6,7 @@ import { PropsWithChildren } from 'react'
 export const Header = ({ children }: PropsWithChildren) => {
   return (
     <header className="sticky top-0 bg-primary p-1">
-      <div className="flex items-center">
+      <div className="mx-auto flex max-w-4xl items-center">
         <Link href="/" title="">
           <Image src="/imgs/logo.svg" width={80} height={40} alt="/" />
         </Link>

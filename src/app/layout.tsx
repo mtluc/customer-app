@@ -7,16 +7,16 @@ import { Nav } from '@/components/layout/nav/navs'
 import { initState } from '@/store/initState'
 import { Metadata, Viewport } from 'next'
 
-export const metadata:Metadata = {
-  icons:"/imgs/favicon.ico"
-};
+export const metadata: Metadata = {
+  icons: '/imgs/favicon.ico'
+}
 
 export const viewport: Viewport = {
-  width: "device-width",
+  width: 'device-width',
   initialScale: 1.0,
   maximumScale: 1.0,
-  userScalable: false,
-};
+  userScalable: false
+}
 
 export default async function RootLayout({
   children
@@ -26,12 +26,12 @@ export default async function RootLayout({
   const initialCount = await initState()
   return (
     <html lang="vi">
-      <body className="min-h-screen flex flex-col">
+      <body className="flex min-h-screen flex-col bg-gray-200">
         <ReduxProvider preloadedState={initialCount}>
           <Header>
             <Nav />
           </Header>
-          <main className="mb-16">{children}</main>
+          <main className="mx-auto mb-16 max-w-4xl">{children}</main>
           <Footer />
         </ReduxProvider>
       </body>
