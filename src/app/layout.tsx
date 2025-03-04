@@ -1,11 +1,22 @@
 import { ReduxProvider } from '@/store/providers'
 
 import '@/app/globals.css'
-import { initState } from '@/store/initState'
+import { Footer } from '@/components/layout/footer/footer'
 import { Header } from '@/components/layout/header/header'
 import { Nav } from '@/components/layout/nav/navs'
-import { Footer } from '@/components/layout/footer/footer'
-import Head from 'next/head'
+import { initState } from '@/store/initState'
+import { Metadata, Viewport } from 'next'
+
+export const metadata:Metadata = {
+  icons:"/imgs/favicon.ico"
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1.0,
+  maximumScale: 1.0,
+  userScalable: false,
+};
 
 export default async function RootLayout({
   children
@@ -15,13 +26,7 @@ export default async function RootLayout({
   const initialCount = await initState()
   return (
     <html lang="vi">
-      <Head>
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
-        />
-      </Head>
-      <body className="min-h-screen">
+      <body className="min-h-screen flex flex-col">
         <ReduxProvider preloadedState={initialCount}>
           <Header>
             <Nav />

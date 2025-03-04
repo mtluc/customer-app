@@ -67,3 +67,12 @@
     @apply bg-background text-foreground;
   }
 }
+
+html{
+  font-size: 14px;
+  line-height: 1.25;
+}
+
+input {
+  touch-action: manipulation;
+}
