@@ -5,11 +5,7 @@ import { Footer } from '@/components/layout/footer/footer'
 import { Header } from '@/components/layout/header/header'
 import { Nav } from '@/components/layout/nav/navs'
 import { initState } from '@/store/initState'
-import { Metadata, Viewport } from 'next'
-
-export const metadata: Metadata = {
-  icons: '/imgs/favicon.ico'
-}
+import { Viewport } from 'next'
 
 export const viewport: Viewport = {
   width: 'device-width',

@@ -5,10 +5,10 @@ import { PropsWithChildren } from 'react'
 
 export const Header = ({ children }: PropsWithChildren) => {
   return (
-    <header className="sticky top-0 bg-primary p-1">
+    <header className="sticky top-0 bg-primary p-1 z-10">
       <div className="mx-auto flex max-w-4xl items-center">
-        <Link href="/" title="">
-          <Image src="/imgs/logo.svg" width={80} height={40} alt="/" />
+        <Link href="/" className='w-16 h-12 relative' title="">
+          <Image src="/imgs/logo.svg" fill alt="/" />
         </Link>
         <div className="relative m-1 flex-1">
           <svg
