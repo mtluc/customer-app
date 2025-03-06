@@ -1,6 +1,5 @@
+import '@/app/globals.scss'
 import { ReduxProvider } from '@/store/providers'
-
-import '@/app/globals.css'
 import { Footer } from '@/components/layout/footer/footer'
 import { Header } from '@/components/layout/header/header'
 import { Nav } from '@/components/layout/nav/navs'
@@ -27,7 +26,7 @@ export default async function RootLayout({
           <Header>
             <Nav />
           </Header>
-          <main className="mx-auto mb-16 max-w-4xl">{children}</main>
+          <main className="mx-auto mb-16 w-full max-w-4xl">{children}</main>
           <Footer />
         </ReduxProvider>
       </body>

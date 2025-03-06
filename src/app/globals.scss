@@ -63,12 +63,13 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
 }
 
-html{
+html {
   font-size: 14px;
   line-height: 1.25;
 }
