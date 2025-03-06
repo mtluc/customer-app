@@ -1,14 +1,23 @@
 
+import { AppConfig } from "@/utils/config";
 import { formatNumber } from "@/utils/utils";
 import { LucideGavel, LucideHeart } from "lucide-react";
 import Link from "next/link";
-import { memo, PropsWithChildren } from "react";
+import { cache, memo, PropsWithChildren, useCallback } from "react";
 
 export interface AuctionsProps extends PropsWithChildren {
     items: any[]
 }
-const Auctions = ({ items }: AuctionsProps) => {
-    console.log(items);
+
+const loadData = cache(async ()=> {
+  return await fetch(`${AppConfig.JBB_API}/auction/searchByCategory?category=23140&pageSize=12&pageNo=1`).then(res => res.json());
+})
+
+const Auctions = async({ items :_items }: AuctionsProps) => {
+    const items = (await loadData()).items as any[];
+    // useCallback(() => {
+    //     console.log(items);
+    // }, [items])
     return <div className="grid grid-cols-3 sm:grid-cols-4 p-1 bg-white">
         {items.map(x => {
             return <div key={x.code} className="bg-white m-1 rounded-md overflow-hidden shadow-[0_0_6px_0px_rgba(0,0,0,0.3)]">

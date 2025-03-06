@@ -6,6 +6,7 @@ import appSlice, { DeviceMode, updateState } from '@/store/slices/appSlice'
 import counterSlice from '@/store/slices/counterSlice/counterSlice'
 import counterSlice1 from '@/store/slices/counterSlice/counterSlice1'
 import { injectReducer, useSelectSlice } from '@/store/store'
+import { AppConfig } from '@/utils/config'
 import { memo, useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 const MyButton = memo(Button)
@@ -31,6 +32,7 @@ export default function CounterClient({ countInit }: { countInit: number }) {
       <div> {device}</div>
       <h2>Counter: {count}</h2>
       <h2>Counter1: {count1}</h2>
+      <div>{process.env.NEXT_PUBLIC_SHARE_KEY}</div>
       <MyButton onClick={clickFn}>Increment</MyButton>;
       <div>
         <MyButton onClick={clickChangeDevice}>Change device</MyButton>;
