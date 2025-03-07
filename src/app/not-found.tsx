@@ -13,7 +13,7 @@ export default function NotFound() {
       <h1 className="text-4xl font-bold">404 - Không tìm thấy trang</h1>
       <p className="mt-2">Trang bạn đang tìm kiếm không tồn tại.</p>
       <Button asChild className="mt-4">
-        <Link href={'/'}>Qay lại trang chủ</Link>
+        <Link href={'/'}>Quay lại trang chủ</Link>
       </Button>
     </div>
   )

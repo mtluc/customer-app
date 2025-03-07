@@ -5,7 +5,7 @@ import { AppConfig } from '@/utils/config'
 import { formatNumber } from '@/utils/utils'
 import { LucideGavel, LucideHeart } from 'lucide-react'
 import Link from 'next/link'
-import { cache, memo, PropsWithChildren } from 'react'
+import { cache, memo, PropsWithChildren, useCallback } from 'react'
 import Image from '../ui/image'
 
 export interface AuctionsProps extends PropsWithChildren {
@@ -27,8 +27,8 @@ const loadData = cache(async () => {
 
 const Auctions = async ({ items: _items }: AuctionsProps) => {
   const items = (await loadData()).items as any[]
+  console.log(items);
   // useCallback(() => {
-  //     console.log(items);
   // }, [items])
   return (
     <div className="grid grid-cols-3 bg-white p-1 sm:grid-cols-4">

@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
                 hostname: 'auc-pctr.c.yimg.jp',
             }
         ],
-        minimumCacheTTL: 60 * 60 * 24 * 1 //cache lại 1 ngày
+        minimumCacheTTL: 60 * 15 //cache lại 15 phút
     }
 }
 
