@@ -6,9 +6,10 @@ const nextConfig: NextConfig = {
         remotePatterns: [
             {
                 protocol: 'https',
-                hostname: 'auc-pctr.c.yimg.jp'
+                hostname: 'auc-pctr.c.yimg.jp',
             }
-        ]
+        ],
+        minimumCacheTTL: 60 * 60 * 24 * 1 //cache lại 1 ngày
     }
 }
 
