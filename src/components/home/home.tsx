@@ -1,7 +1,7 @@
 import { AppConfig } from '@/utils/config'
 import Auctions from '../auction/auctions'
 import TopCategories from './top-categories'
-import TopSearch from './top-search'
+import TopSearch from './top-search/top-search'
 import TopShop from './top-shop/top-shop'
 import TopBrand from './top-brand/top-brand'
 

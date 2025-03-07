@@ -6,6 +6,7 @@ import { formatNumber } from '@/utils/utils'
 import { LucideGavel, LucideHeart } from 'lucide-react'
 import Link from 'next/link'
 import { cache, memo, PropsWithChildren } from 'react'
+import Image from '../ui/image'
 
 export interface AuctionsProps extends PropsWithChildren {
   items: any[]
@@ -39,9 +40,11 @@ const Auctions = async ({ items: _items }: AuctionsProps) => {
           >
             <Link href="/">
               <div className="z-1 relative">
-                <img
+                <Image
                   src={x.image}
                   alt={x.name}
+                  width={150}
+                  height={150}
                   className="aspect-square w-full rounded-md object-cover"
                 />
                 <div className="absolute bottom-2 right-2 rounded-md bg-white p-1 text-primary shadow-[0_0_6px_0px_rgba(0,0,0,0.3)]">

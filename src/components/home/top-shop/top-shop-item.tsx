@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { Button } from '@/components/ui/button'
+import Image from '@/components/ui/image'
 import topShopSlice from '@/store/slices/home/top-shop.Slice'
 import { useSelectSlice } from '@/store/store'
 import { formatNumber } from '@/utils/utils'
@@ -19,7 +20,7 @@ const TopShopItem = ({ shopId }: { shopId: string }) => {
           className="block h-auto w-full p-2"
           title={name}
         >
-          <img
+          <Image
             src={img}
             alt={name}
             width={40}

@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { Button } from '@/components/ui/button'
+import Image from '@/components/ui/image'
 import topBrandSlice from '@/store/slices/home/top-brand.Slice'
 import { useSelectSlice } from '@/store/store'
 import Link from 'next/link'
@@ -12,17 +13,17 @@ const TopBrandItem = ({ brandId }: { brandId: string }) => {
   )
   return (
     <div className="m-2 text-center">
-      <Button asChild variant="ghost">
+      <Button asChild variant="ghost" className="h-20 w-20 rounded-full p-0 overflow-hidden">
         <Link
           href={`/auction?key=${id}`}
-          className="h-20 w-20 !rounded-full !p-0"
           title={name}
         >
-          <img
+          <Image
             src={img}
-            width={100}
+            width={70}
+            height={70}
             alt={name}
-            className="aspect-square w-full rounded-full object-cover"
+            className="aspect-square w-full object-cover transition duration-300 hover:brightness-75"
           />
         </Link>
       </Button>

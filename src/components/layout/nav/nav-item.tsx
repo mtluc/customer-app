@@ -24,7 +24,7 @@ const NavItem = ({ href, name, Icon, children, count }: NavItemProps) => {
     >
       <div
         className={
-          'relative m-auto h-8 w-8 rounded-full border' +
+          'group relative m-auto h-8 w-8 rounded-full border' +
           (isActived
             ? ' bg-primary-foreground text-primary'
             : ' border-transparent')
@@ -32,7 +32,7 @@ const NavItem = ({ href, name, Icon, children, count }: NavItemProps) => {
       >
         <Icon
           className={
-            'absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2' +
+            'absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 group-hover:stroke-2' +
             (isActived ? ' w-8/12 stroke-2' : ' w-10/12 stroke-1')
           }
         />
