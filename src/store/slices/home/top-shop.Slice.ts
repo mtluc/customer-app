@@ -1,20 +1,25 @@
-import { ArrayObject, normalizeArray } from "@/utils/normalize-array";
+
+import { createEntityAdapter, EntityState } from "@reduxjs/toolkit";
 import { createSliceApp } from "../slice";
 
-export interface Shop {
+interface Shop {
     id: string;
     name: string;
     img: string;
     totalOrder: number;
     typeName: string;
 }
-
-interface TopShopState {
-    data: ArrayObject<Shop>
+export const ShopAdapter = createEntityAdapter<Shop, string>(
+    {
+        selectId: (e) => e.id
+    }
+);
+interface TopShopState extends EntityState<Shop, string> {
 }
 
-const initialState: TopShopState = {
-    data: normalizeArray<Shop>(
+const initialState: TopShopState =ShopAdapter.getInitialState(
+    ShopAdapter.addMany(
+        ShopAdapter.getInitialState(),
         [
             {
                 id: "20210531081631",
@@ -58,8 +63,9 @@ const initialState: TopShopState = {
                 totalOrder: 6532,
                 typeName: "Đồng hồ - Phụ kiện"
             },
-        ])
-};
+        ]
+    )
+);
 
 const topShopSlice = createSliceApp({
     name: 'top_shop',

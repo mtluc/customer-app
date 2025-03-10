@@ -10,7 +10,7 @@ import { memo } from 'react'
 const TopShopItem = ({ shopId }: { shopId: string }) => {
   const { img, name, typeName, totalOrder, id } = useSelectSlice(
     topShopSlice,
-    ({ data: s }) => s.data[shopId]
+    (s) => s.entities[shopId]
   )
   return (
     <div className="m-1 flex items-center overflow-hidden rounded-xl border">

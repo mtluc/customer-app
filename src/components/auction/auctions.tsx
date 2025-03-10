@@ -5,7 +5,7 @@ import { AppConfig } from '@/utils/config'
 import { formatNumber } from '@/utils/utils'
 import { LucideGavel, LucideHeart } from 'lucide-react'
 import Link from 'next/link'
-import { cache, memo, PropsWithChildren, useCallback } from 'react'
+import { cache, memo, PropsWithChildren } from 'react'
 import Image from '../ui/image'
 
 export interface AuctionsProps extends PropsWithChildren {
@@ -14,9 +14,9 @@ export interface AuctionsProps extends PropsWithChildren {
 
 const loadData = cache(async () => {
   const res = await fetch(
-    `${AppConfig.JBB_API}/auction/searchByCategory?category=23140&pageSize=12&pageNo=1`,
+    `${AppConfig.JBB_API}/api/v1/auctions/sugguest/1`,
     {
-      next: { revalidate: 300 } // Cache trong 5 phút (300 giây)
+      next: { revalidate: 3 } // Cache trong 5 phút (300 giây)
     }
   )
   if (!res.ok) {
@@ -26,10 +26,8 @@ const loadData = cache(async () => {
 })
 
 const Auctions = async ({ items: _items }: AuctionsProps) => {
-  const items = (await loadData()).items as any[]
+  const items = (await loadData()) as any[]
   console.log(items);
-  // useCallback(() => {
-  // }, [items])
   return (
     <div className="grid grid-cols-3 bg-white p-1 sm:grid-cols-4">
       {items.map((x) => {

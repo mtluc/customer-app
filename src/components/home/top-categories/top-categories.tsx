@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 import TopCategoriesItem from './top-categories-item'
 const TopCategories = () => {
     injectReducer(topCategoriesSlice)
-    const categoryIds = useSelectSlice(topCategoriesSlice, (s) => s.data.ids)
+    const categoryIds = useSelectSlice(topCategoriesSlice, (s) => s.ids)
     useEffect(() => {
         injectReducer(topCategoriesSlice)
         return () => {

@@ -6,7 +6,7 @@ import { useEffect } from 'react'
 
 const TopShop = () => {
   injectReducer(topShopSlice)
-  const shopIds = useSelectSlice(topShopSlice, (s) => s.data.ids)
+  const shopIds = useSelectSlice(topShopSlice, (s) => s.ids)
   useEffect(() => {
     injectReducer(topShopSlice)
     return () => {

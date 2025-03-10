@@ -1,18 +1,23 @@
-import { ArrayObject, normalizeArray } from "@/utils/normalize-array";
+import { createEntityAdapter, EntityState } from "@reduxjs/toolkit";
 import { createSliceApp } from "../slice";
 
-export interface Brand {
+interface Brand {
     id: string;
     name: string;
     img: string;
 }
 
-interface TopBrandState {
-    data: ArrayObject<Brand>
+export const BrandAdapter = createEntityAdapter<Brand, string>({
+    selectId: (brand) => brand.id,
+    sortComparer: (a, b) => a.name.localeCompare(b.name)
+});
+
+interface TopBrandState extends EntityState<Brand, string> {
 }
 
-const initialState: TopBrandState = {
-    data: normalizeArray<Brand>(
+const initialState: TopBrandState = BrandAdapter.getInitialState(
+    BrandAdapter.addMany(
+        BrandAdapter.getInitialState(),
         [
             {
                 id: "20210507075004",
@@ -94,8 +99,9 @@ const initialState: TopBrandState = {
                 name: "SK-II",
                 img: "/imgs/top-brand/20210508043610.png"
             },
-        ])
-};
+        ]
+    )
+);
 
 const topBrandSlice = createSliceApp({
     name: 'top_brand',

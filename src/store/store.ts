@@ -11,6 +11,8 @@ import { useSelector } from 'react-redux'
 import appSlice from './slices/appSlice'
 import { SliceApp } from './slices/slice'
 import { thunk } from 'redux-thunk'
+import topSearchSlice from './slices/home/top-search.Slice'
+import autionsSlice from './slices/auction/auctions.Slice'
 
 let store: EnhancedStore
 
@@ -20,7 +22,9 @@ const asyncReducers: { [key: string]: Reducer } = {}
 // Tạo reducer gốc
 const createRootReducer = () =>
   combineReducers({
-    app: appSlice.instance.reducer, //Reducer mặc định
+    [appSlice.instance.name]: appSlice.instance.reducer, //Reducer mặc định
+    [topSearchSlice.instance.name]: topSearchSlice.instance.reducer,
+    [autionsSlice.instance.name]: autionsSlice.instance.reducer,
     ...asyncReducers //Reducers động
   })
 

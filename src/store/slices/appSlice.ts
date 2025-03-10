@@ -1,5 +1,5 @@
 import { createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
-import { Draft, produce } from 'immer'
+import { produce } from 'immer'
 import { createSliceApp } from './slice'
 
 export enum DeviceMode {

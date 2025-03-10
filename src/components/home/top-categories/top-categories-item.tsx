@@ -8,7 +8,7 @@ import { memo } from "react";
 const TopCategoryItem = ({ id }: { id: string }) => {
     const { img, name } = useSelectSlice(
         topCategoriesSlice,
-        ({ data: s }) => s.data[id]
+        ({ entities }) => entities[id]
     )
     return <Button
         variant='ghost'

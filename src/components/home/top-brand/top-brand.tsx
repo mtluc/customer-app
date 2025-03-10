@@ -6,7 +6,7 @@ import TopBrandItem from './top-brand-item'
 
 const TopBrand = () => {
   injectReducer(topBrandSlice)
-  const brandIds = useSelectSlice(topBrandSlice, (s) => s.data.ids)
+  const brandIds = useSelectSlice(topBrandSlice, (s) => s.ids)
   useEffect(() => {
     injectReducer(topBrandSlice)
     return () => {

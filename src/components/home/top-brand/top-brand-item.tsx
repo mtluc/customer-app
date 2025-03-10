@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { Button } from '@/components/ui/button'
 import Image from '@/components/ui/image'
-import topBrandSlice from '@/store/slices/home/top-brand.Slice'
+import topBrandSlice, { BrandAdapter } from '@/store/slices/home/top-brand.Slice'
 import { useSelectSlice } from '@/store/store'
 import Link from 'next/link'
 import { memo } from 'react'
@@ -9,7 +9,7 @@ import { memo } from 'react'
 const TopBrandItem = ({ brandId }: { brandId: string }) => {
   const { img, name, id } = useSelectSlice(
     topBrandSlice,
-    ({ data: s }) => s.data[brandId]
+    (s) => s.entities[brandId]
   )
   return (
     <div className="m-2 text-center">
