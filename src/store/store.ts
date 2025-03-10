@@ -7,7 +7,7 @@ import {
   Reducer,
   Slice
 } from '@reduxjs/toolkit'
-import { useSelector } from 'react-redux'
+import { useSelector, useStore } from 'react-redux'
 import appSlice from './slices/appSlice'
 import { SliceApp } from './slices/slice'
 import { thunk } from 'redux-thunk'
@@ -78,6 +78,7 @@ export function removeReducer(slice: Slice) {
 
 export type AppStore = ReturnType<typeof makeStore>
 export type AppDispatch = ReturnType<typeof makeStore>['dispatch']
+export const useAppStore = useStore.withTypes<AppStore>()
 
 export function useSelectSlice<SliceState, Selected>(
   slice: SliceApp<SliceState>,

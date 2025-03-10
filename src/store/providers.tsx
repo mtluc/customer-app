@@ -1,14 +1,17 @@
 'use client'
 
-import { PropsWithChildren } from 'react'
+import { PropsWithChildren, useRef } from 'react'
 import { Provider } from 'react-redux'
-import { makeStore } from './store'
+import { AppStore, makeStore } from './store'
 
 interface ProvidersProps extends PropsWithChildren {
   preloadedState?: Partial<any>
 }
 
 export function ReduxProvider({ children, preloadedState }: ProvidersProps) {
-  const store = makeStore(preloadedState)
-  return <Provider store={store}>{children}</Provider>
+  const storeRef = useRef<AppStore>(undefined)
+  if (!storeRef.current) {
+    storeRef.current = makeStore(preloadedState)
+  }
+  return <Provider store={storeRef.current}>{children}</Provider>
 }

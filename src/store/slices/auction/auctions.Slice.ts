@@ -2,7 +2,7 @@
 import { createEntityAdapter, createSelector, EntityState, PayloadAction } from "@reduxjs/toolkit";
 import { createSliceApp } from "../slice";
 
-interface Auction {
+export interface Auction {
     code: string
     bidNumb: number
     image: string
@@ -30,10 +30,10 @@ const autionsSlice = createSliceApp({
     reducers: {
         adds: (state, action: PayloadAction<{ key: string, data: Auction[] }>) => {
             const { key, data } = action.payload;
-            if(state[key]){
-                AuctionAdapter.addMany(state[key],data);
-            }else{
-                state[key] = AuctionAdapter.addMany(AuctionAdapter.getInitialState(),data);
+            if (state[key]) {
+                AuctionAdapter.addMany(state[key], data);
+            } else {
+                state[key] = AuctionAdapter.addMany(AuctionAdapter.getInitialState(), data);
             }
         },
         removes: (state, action: PayloadAction<{ key: string }>) => {
@@ -42,6 +42,14 @@ const autionsSlice = createSliceApp({
     }
 })
 
-export const selectAction = createSelector
+export const selectAuctions = createSelector(
+    [(state: AuctionListState) => state, (_, key) => key],
+    (state, key) => state[key]
+)
+
+export const selectOneAuction = createSelector(
+    [(state: AuctionListState) => state, (_, key, code) => [key, code]],
+    (state, [key, code]) => state[key]?.entities?.[code]
+)
 
 export default autionsSlice
