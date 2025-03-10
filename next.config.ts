@@ -7,9 +7,12 @@ const nextConfig: NextConfig = {
             {
                 protocol: 'https',
                 hostname: 'auc-pctr.c.yimg.jp',
+            }, {
+                protocol: 'https',
+                hostname: 'res.cloudinary.com',
             }
         ],
-        minimumCacheTTL: 60 * 15 //cache lại 15 phút
+        //minimumCacheTTL: 60 * 15 //cache lại 15 phút
     }
 }
 

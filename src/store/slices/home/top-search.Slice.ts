@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-object-type */
 import { createEntityAdapter, createSelector, EntityState } from "@reduxjs/toolkit";
 import { createSliceApp } from "../slice";
 

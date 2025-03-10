@@ -7,12 +7,13 @@ import {
   Reducer,
   Slice
 } from '@reduxjs/toolkit'
+import { useEffect, useRef } from 'react'
 import { useSelector, useStore } from 'react-redux'
-import appSlice from './slices/appSlice'
-import { SliceApp } from './slices/slice'
 import { thunk } from 'redux-thunk'
-import topSearchSlice from './slices/home/top-search.Slice'
+import appSlice from './slices/appSlice'
 import autionsSlice from './slices/auction/auctions.Slice'
+import topSearchSlice from './slices/home/top-search.Slice'
+import { SliceApp } from './slices/slice'
 
 let store: EnhancedStore
 
@@ -90,4 +91,33 @@ export function useSelectSlice<SliceState, Selected>(
     }
     return selector(state[slice.instance.name] as SliceState)
   })
+}
+
+export function useSyncSSR(
+  mount: () => void,
+  unmount: () => void
+) {
+  const initRef = useRef({
+    inited: false,
+    clientUnmounted: false
+  });
+
+
+
+  if (!initRef.current.inited) {
+    initRef.current.inited = true;
+    mount();
+  }
+
+  useEffect(() => {
+    if (initRef.current.clientUnmounted && initRef.current.inited) {
+      mount();
+      initRef.current.clientUnmounted = false;
+    }
+    return () => {
+      unmount();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      initRef.current.clientUnmounted = true;
+    }
+  }, []);
 }

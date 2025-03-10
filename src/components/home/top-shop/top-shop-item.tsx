@@ -3,12 +3,11 @@ import { Button } from '@/components/ui/button'
 import Image from '@/components/ui/image'
 import topShopSlice from '@/store/slices/home/top-shop.Slice'
 import { useSelectSlice } from '@/store/store'
-import { formatNumber } from '@/utils/utils'
 import Link from 'next/link'
 import { memo } from 'react'
 
 const TopShopItem = ({ shopId }: { shopId: string }) => {
-  const { img, name, typeName, totalOrder, id } = useSelectSlice(
+  const { code, imageUrl, label } = useSelectSlice(
     topShopSlice,
     (s) => s.entities[shopId]
   )
@@ -16,23 +15,23 @@ const TopShopItem = ({ shopId }: { shopId: string }) => {
     <div className="m-1 flex items-center overflow-hidden rounded-xl border">
       <Button asChild variant="ghost">
         <Link
-          href={`/seller/${id}`}
+          href={`/seller/${code}`}
           className="block h-auto w-full p-2"
-          title={name}
+          title={label}
         >
           <Image
-            src={img}
-            alt={name}
+            src={imageUrl}
+            alt={label}
             width={40}
             height={40}
             className="rounded-full"
           />
           <div className="flex-1 pl-3 font-semibold">
-            <div>{name}</div>
+            <div>{code}</div>
             <div className="mt-1 text-xs">
-              <span className="text-gray-400">{typeName}</span>
-              <span className="mx-2 text-gray-400">|</span>
-              <span>{formatNumber(totalOrder, 0)} Đơn hàng</span>
+              <span className="text-gray-400">{label}</span>
+              {/* <span className="mx-2 text-gray-400">|</span> */}
+              {/* <span>{formatNumber(order, 0)} Đơn hàng</span> */}
             </div>
           </div>
         </Link>

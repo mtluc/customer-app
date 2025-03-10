@@ -1,6 +1,6 @@
 import { AppConfig } from '@/utils/config'
 import { cache } from 'react'
-import SugguestPopular from './sugguest/sugguest-popular'
+import Sugguest from './sugguest/sugguest'
 import TopBrand from './top-brand/top-brand'
 import TopCategories from './top-categories/top-categories'
 import TopSearch from './top-search/top-search'
@@ -17,24 +17,70 @@ const loadSugguest = cache(async (type: number) => {
     throw new Error('Lỗi khi lấy danh sách sản phẩm đấu giá')
   }
   return res.json()
-});
+})
+
+const loadTopShop = cache(async () => {
+  const res = await fetch(`${AppConfig.JBB_API}/api/v1/common/topsellers`, {
+    next: { revalidate: 1 * 24 * 60 * 60 }
+  })
+  if (!res.ok) {
+    throw new Error('Lỗi khi lấy danh sách shop bán chạy')
+  }
+  return res.json()
+})
+
+const loadTopCategories = cache(async () => {
+  const res = await fetch(
+    `${AppConfig.JBB_API}/api/v1/common/popularcategories`,
+    {
+      next: { revalidate: 1 * 24 * 60 * 60 }
+    }
+  )
+  if (!res.ok) {
+    throw new Error('Lỗi khi lấy danh sách danh mục phổ biến')
+  }
+  return res.json()
+})
+
+const loadTopBands = cache(async () => {
+  const res = await fetch(`${AppConfig.JBB_API}/api/v1/common/popularbrands`, {
+    next: { revalidate: 1 * 24 * 60 * 60 }
+  })
+  if (!res.ok) {
+    throw new Error('Lỗi khi lấy danh sách danh mục phổ biến')
+  }
+  return res.json()
+})
 
 const Home = async () => {
-  const [auctionPoulars] = await Promise.all([loadSugguest(1)]);
+  const [auctionPoulars, auctionOneYens, topSellers, topCategories, topBands] =
+    await Promise.all([
+      loadSugguest(1),
+      loadSugguest(2),
+      loadTopShop(),
+      loadTopCategories(),
+      loadTopBands()
+    ])
 
   return (
     <>
-      <SugguestPopular items={auctionPoulars} />
-      {/* <section>
-        <div className="bg-white py-2">
-          <h2 className="px-2 text-lg font-semibold">Đề xuất cho bạn</h2>
-          <Auctions items={[]} />
-        </div>
-      </section> */}
-      <TopCategories />
+      <Sugguest
+        key={'SUGGUEST_POPULAR'}
+        keyOfList="SUGGUEST_POPULAR"
+        title="Sản phẩm phổ biến"
+        items={auctionPoulars}
+      />
+      <Sugguest
+        key={'SUGGUEST_ONE_YEN'}
+        keyOfList="SUGGUEST_ONE_YEN"
+        title="Sản phẩm 1¥"
+        className="mt-6"
+        items={auctionOneYens}
+      />
+      <TopCategories items={topCategories} />
       <TopSearch />
-      <TopBrand />
-      <TopShop />
+      <TopBrand items={topBands} />
+      <TopShop items={topSellers} />
     </>
   )
 }

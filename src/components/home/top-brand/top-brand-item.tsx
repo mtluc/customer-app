@@ -1,28 +1,29 @@
 /* eslint-disable @next/next/no-img-element */
 import { Button } from '@/components/ui/button'
 import Image from '@/components/ui/image'
-import topBrandSlice, { BrandAdapter } from '@/store/slices/home/top-brand.Slice'
+import topBrandSlice from '@/store/slices/home/top-brand.Slice'
 import { useSelectSlice } from '@/store/store'
 import Link from 'next/link'
 import { memo } from 'react'
 
-const TopBrandItem = ({ brandId }: { brandId: string }) => {
-  const { img, name, id } = useSelectSlice(
+const TopBrandItem = ({ code }: { code: string }) => {
+  const { imageUrl, label } = useSelectSlice(
     topBrandSlice,
-    (s) => s.entities[brandId]
+    (s) => s.entities[code]
   )
   return (
     <div className="m-2 text-center">
-      <Button asChild variant="ghost" className="h-20 w-20 rounded-full p-0 overflow-hidden">
-        <Link
-          href={`/auction?key=${id}`}
-          title={name}
-        >
+      <Button
+        asChild
+        variant="ghost"
+        className="h-20 w-20 overflow-hidden rounded-full p-0"
+      >
+        <Link href={`/auction?key=${label}`} title={label}>
           <Image
-            src={img}
+            src={imageUrl}
             width={70}
             height={70}
-            alt={name}
+            alt={label}
             className="aspect-square w-full object-cover transition duration-300 hover:brightness-75"
           />
         </Link>
