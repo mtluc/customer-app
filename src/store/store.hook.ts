@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client"
 import { useEffect, useRef } from "react";
 import { SliceApp } from "./slices/slice";
@@ -16,23 +18,21 @@ export function useSyncSSR(
   });
 
   if (!initRef.current.inited) {
-    console.log('mount 1', mount.name)
     initRef.current.inited = true;
     mount(store);
   }
 
   useEffect(() => {
-    if (initRef.current.clientUnmounted) {
-      console.log('mount 2', mount.name)
+    const _initRef = initRef;
+    if (_initRef.current.clientUnmounted) {
       mount(store);
-      initRef.current.clientUnmounted = false;
+      _initRef.current.clientUnmounted = false;
     }
     return () => {
-      console.log('unmount', unmount.name)
       unmount(store);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      initRef.current.clientUnmounted = true;
+      _initRef.current.clientUnmounted = true;
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 }
 
@@ -42,7 +42,7 @@ export function useSelectSlice<SliceState, Selected>(
 ): Selected {
   return useSelector((state: any) => {
     if (state[slice.instance.name] === undefined) {
-      `${slice.instance.name} not injected`
+      throw `${slice.instance.name} not injected`
     }
     return selector(state[slice.instance.name] as SliceState)
   })

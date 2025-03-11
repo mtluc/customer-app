@@ -1,9 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
+import categoriesSlice, { fetchCategoryOnRequest } from "@/store/slices/categories/categories.Slice";
 import { useSelectSlice } from "@/store/store.hook";
-import { Button } from "../ui/button";
-import categoriesSlice, { fetchCategoryItems, fetchCategoryOnRequest } from "@/store/slices/categories/categories.Slice";
 import { useDispatch } from "react-redux";
-import { useCallback } from "react";
+import { Button } from "../ui/button";
 
 const CategoriesRoot = () => {
     const ids = useSelectSlice(categoriesSlice, (s) => s.roots.ids)
@@ -19,9 +19,9 @@ const CategoriesItem = ({ code }: { code: string }) => {
     const dispatch = useDispatch<any>();
     const { label } = useSelectSlice(categoriesSlice, (s) => s.roots.entities[code]);
     const actived = useSelectSlice(categoriesSlice, (s) => s.roots.idActived === code);
-    const clickItem = useCallback(() => {
+    const clickItem = () => {
         dispatch(fetchCategoryOnRequest(code))
-    }, [code]);
+    };
     return <Button className={"block h-auto w-full text-wrap min-h-16  my-1 hover:text-primary-foreground active:text-primary-foreground active:bg-primary" + (actived ? " bg-primary text-primary-foreground" : " text-foreground bg-gray-300")}
         onClick={clickItem}>
         {label} {actived}

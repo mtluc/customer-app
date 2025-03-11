@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { Button } from '@/components/ui/button'
 import Image from '@/components/ui/image'
 import topShopSlice from '@/store/slices/home/top-shop.Slice'
@@ -10,7 +9,7 @@ const TopShopItem = ({ shopId }: { shopId: string }) => {
   const { code, imageUrl, label } = useSelectSlice(
     topShopSlice,
     (s) => s.entities[shopId]
-  ) || {} as any
+  )
   return (
     <div className="m-1 flex items-center overflow-hidden rounded-xl border">
       <Button asChild variant="ghost">

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import categoriesSlice, { fetchCategoryOnRequest } from "@/store/slices/categories/categories.Slice";
 import { useSelectSlice } from "@/store/store.hook";
 import Link from "next/link";

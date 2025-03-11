@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import { AppConfig } from '@/utils/config'
 import { cache } from 'react'
 import { Category } from '@/store/slices/home/top-categories.Slice'

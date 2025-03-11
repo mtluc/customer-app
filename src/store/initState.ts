@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { headers } from 'next/headers'
 
 export async function fetchData() {

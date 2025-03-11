@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
+
 import { Button } from '@/components/ui/button'
 import Image from '@/components/ui/image'
 import topBrandSlice from '@/store/slices/home/top-brand.Slice'
@@ -10,7 +10,7 @@ const TopBrandItem = ({ code }: { code: string }) => {
   const { imageUrl, label } = useSelectSlice(
     topBrandSlice,
     (s) => s.entities[code]
-  ) || {} as any
+  ) 
   return (
     <div className="m-2 text-center">
       <Button

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { AppDispatch } from "@/store/store";
 import { createAsyncThunk, EntityState, PayloadAction } from "@reduxjs/toolkit";
 import { Category, CategoryAdapter } from "../home/top-categories.Slice";

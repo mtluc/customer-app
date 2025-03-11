@@ -1,4 +1,5 @@
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 interface IAppConfig {
     JBB_API: string
     SESSION_SECRET: string,

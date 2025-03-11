@@ -10,7 +10,7 @@ const TopCategoryItem = ({ code }: { code: string }) => {
   const { imageUrl, label } = useSelectSlice(
     topCategoriesSlice,
     ({ entities }) => entities[code]
-  ) || {} as any
+  )
   return (
     <Button
       variant="ghost"

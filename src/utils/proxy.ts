@@ -1,8 +1,10 @@
-import { NextResponse } from "next/server";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { NextRequest, NextResponse } from "next/server";
 import { getSession, ISession } from "./session";
 import { devLog } from "./utils";
 
-export async function AccessOptions(req: Request) {
+export async function AccessOptions(req: NextRequest) {
     const { origin } = new URL(req.url);
     const currentOrigin = req.headers.get("origin") || origin;
     return NextResponse.json(
@@ -19,8 +21,8 @@ export async function AccessOptions(req: Request) {
 }
 
 export async function proxy(
-    req: Request,
-    res: Response,
+    req: NextRequest,
+    res: NextResponse,
     apiUrlFrom: string,
     apiUrlTo: string,
     isPublic: boolean,
@@ -96,7 +98,7 @@ export async function proxy(
                     } else if (error.message) {
                         error = error.message;
                     }
-                } catch (error) {
+                } catch (error:any) {
                     error = text;
                 }
                 resObj.status = response.status;

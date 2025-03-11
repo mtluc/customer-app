@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import NextImage from "next/image";
 import { memo } from "react";
 import { allowedDomains } from "../../../next.config";
@@ -18,6 +19,6 @@ export default memo(function Image(props: ImageProps) {
     return isAllowed ? (
         <NextImage {...props}/>
     ) : (
-        <img {...props} loading="lazy" />
+        <img  {...props} loading="lazy" alt={props.alt || ""} />
     );
 })
