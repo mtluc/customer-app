@@ -1,28 +1,16 @@
 'use client'
 import topShopSlice, {
-  Shop,
-  ShopAdapter
+  Seller
 } from '@/store/slices/home/top-shop.Slice'
-import {
-  injectReducer,
-  removeReducer,
-  useSelectSlice,
-  useSyncSSR
-} from '@/store/store'
+import { useSelectSlice, useSyncSSR } from '@/store/store.hook'
 import TopShopItem from './top-shop-item'
 
-const TopShop = ({ items }: { items: Shop[] }) => {
+const TopShop = ({ items }: { items: Seller[] }) => {
   useSyncSSR(
-    () =>
-      injectReducer(
-        topShopSlice,
-        ShopAdapter.getInitialState(
-          ShopAdapter.addMany(ShopAdapter.getInitialState(), items)
-        )
-      ),
-    () => removeReducer(topShopSlice.instance)
+    (st) => { st.dispatch(topShopSlice.actions.initState(items)) },
+    (st) => { st.dispatch(topShopSlice.actions.clear()) }
   )
-  const shopIds = useSelectSlice(topShopSlice, (s) => s.ids)
+  const shopIds = useSelectSlice(topShopSlice, (s) => s.ids) || []
   return (
     <section className="bg-gray-200 pt-6">
       <div className="bg-white px-2">

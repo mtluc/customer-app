@@ -1,27 +1,15 @@
 'use client'
 import topCategoriesSlice, {
-  Category,
-  CategoryAdapter
+  Category
 } from '@/store/slices/home/top-categories.Slice'
-import {
-  injectReducer,
-  removeReducer,
-  useSelectSlice,
-  useSyncSSR
-} from '@/store/store'
+import { useSelectSlice, useSyncSSR } from '@/store/store.hook'
 import TopCategoriesItem from './top-categories-item'
 const TopCategories = ({ items }: { items: Category[] }) => {
   useSyncSSR(
-    () =>
-      injectReducer(
-        topCategoriesSlice,
-        CategoryAdapter.getInitialState(
-          CategoryAdapter.addMany(CategoryAdapter.getInitialState(), items)
-        )
-      ),
-    () => removeReducer(topCategoriesSlice.instance)
+    (st) => { st.dispatch(topCategoriesSlice.actions.initState(items)) },
+    (st) => { st.dispatch(topCategoriesSlice.actions.clear()) }
   )
-  const categoryIds = useSelectSlice(topCategoriesSlice, (s) => s.ids)
+  const categoryIds = useSelectSlice(topCategoriesSlice, (s) => s.ids) || []
 
   return (
     <section className="bg-gray-200 pt-6">

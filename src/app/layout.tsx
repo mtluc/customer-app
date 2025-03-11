@@ -26,7 +26,7 @@ export default async function RootLayout({
           <Header>
             <Nav />
           </Header>
-          <main className="mx-auto mb-[86px] w-full max-w-4xl">{children}</main>
+          <main className="mx-auto mb-[70px] w-full max-w-4xl">{children}</main>
           <Footer />
         </ReduxProvider>
       </body>

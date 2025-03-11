@@ -61,7 +61,6 @@ const Home = async () => {
       loadTopCategories(),
       loadTopBands()
     ])
-
   return (
     <>
       <Sugguest

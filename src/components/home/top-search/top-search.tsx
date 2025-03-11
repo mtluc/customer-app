@@ -1,12 +1,12 @@
 'use client'
 import { Button } from '@/components/ui/button'
 import topSearchSlice from '@/store/slices/home/top-search.Slice'
-import { useSelectSlice } from '@/store/store'
+import { useSelectSlice } from '@/store/store.hook'
 import Link from 'next/link'
 
 const TopSearch = () => {
-  const keywordIds = useSelectSlice(topSearchSlice, (s) => s.ids)
-  const datas = useSelectSlice(topSearchSlice, (s) => s.entities)
+  const keywordIds = useSelectSlice(topSearchSlice, (s) => s.ids) || []
+  const datas = useSelectSlice(topSearchSlice, (s) => s.entities) || {} as any
   return (
     <section className="bg-gray-200 pt-6">
       <div className="bg-white px-2">

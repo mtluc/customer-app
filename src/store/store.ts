@@ -7,25 +7,38 @@ import {
   Reducer,
   Slice
 } from '@reduxjs/toolkit'
-import { useEffect, useRef } from 'react'
-import { useSelector, useStore } from 'react-redux'
 import { thunk } from 'redux-thunk'
 import appSlice from './slices/appSlice'
 import autionsSlice from './slices/auction/auctions.Slice'
 import topSearchSlice from './slices/home/top-search.Slice'
 import { SliceApp } from './slices/slice'
+import categoriesSlice from './slices/categories/categories.Slice'
+import topBrandSlice from './slices/home/top-brand.Slice'
+import topCategoriesSlice from './slices/home/top-categories.Slice'
+import topShopSlice from './slices/home/top-shop.Slice'
 
 let store: EnhancedStore
+const staticReducer: SliceApp[] = [
+  appSlice,
+  categoriesSlice,
+  autionsSlice,
+  topSearchSlice,
+  topShopSlice,
+  topBrandSlice,
+  topCategoriesSlice
+]
 
 // Lưu trữ reducers động
 const asyncReducers: { [key: string]: Reducer } = {}
 
+
 // Tạo reducer gốc
 const createRootReducer = () =>
   combineReducers({
-    [appSlice.instance.name]: appSlice.instance.reducer, //Reducer mặc định
-    [topSearchSlice.instance.name]: topSearchSlice.instance.reducer,
-    [autionsSlice.instance.name]: autionsSlice.instance.reducer,
+    ...(staticReducer.reduce((x, y) => {
+      x[y.instance.name] = y.instance.reducer
+      return x
+    }, {} as { [key: string]: Reducer })),
     ...asyncReducers //Reducers động
   })
 
@@ -79,45 +92,4 @@ export function removeReducer(slice: Slice) {
 
 export type AppStore = ReturnType<typeof makeStore>
 export type AppDispatch = ReturnType<typeof makeStore>['dispatch']
-export const useAppStore = useStore.withTypes<AppStore>()
 
-export function useSelectSlice<SliceState, Selected>(
-  slice: SliceApp<SliceState>,
-  selector: (state: SliceState) => Selected
-): Selected {
-  return useSelector((state: any) => {
-    if (state[slice.instance.name] === undefined) {
-      throw `${slice.instance.name} not injected`
-    }
-    return selector(state[slice.instance.name] as SliceState)
-  })
-}
-
-export function useSyncSSR(
-  mount: () => void,
-  unmount: () => void
-) {
-  const initRef = useRef({
-    inited: false,
-    clientUnmounted: false
-  });
-
-
-
-  if (!initRef.current.inited) {
-    initRef.current.inited = true;
-    mount();
-  }
-
-  useEffect(() => {
-    if (initRef.current.clientUnmounted && initRef.current.inited) {
-      mount();
-      initRef.current.clientUnmounted = false;
-    }
-    return () => {
-      unmount();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      initRef.current.clientUnmounted = true;
-    }
-  }, []);
-}

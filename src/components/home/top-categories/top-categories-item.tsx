@@ -2,7 +2,7 @@
 import { Button } from '@/components/ui/button'
 import Image from '@/components/ui/image'
 import topCategoriesSlice from '@/store/slices/home/top-categories.Slice'
-import { useSelectSlice } from '@/store/store'
+import { useSelectSlice } from '@/store/store.hook'
 import Link from 'next/link'
 import { memo } from 'react'
 
@@ -10,7 +10,7 @@ const TopCategoryItem = ({ code }: { code: string }) => {
   const { imageUrl, label } = useSelectSlice(
     topCategoriesSlice,
     ({ entities }) => entities[code]
-  )
+  ) || {} as any
   return (
     <Button
       variant="ghost"

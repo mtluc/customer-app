@@ -1,29 +1,17 @@
 'use client'
 import topBrandSlice, {
-  Brand,
-  BrandAdapter
+  Brand
 } from '@/store/slices/home/top-brand.Slice'
-import {
-  injectReducer,
-  removeReducer,
-  useSelectSlice,
-  useSyncSSR
-} from '@/store/store'
+import { useSelectSlice, useSyncSSR } from '@/store/store.hook'
 import TopBrandItem from './top-brand-item'
 
 const TopBrand = ({ items }: { items: Brand[] }) => {
   useSyncSSR(
-    () =>
-      injectReducer(
-        topBrandSlice,
-        BrandAdapter.getInitialState(
-          BrandAdapter.addMany(BrandAdapter.getInitialState(), items)
-        )
-      ),
-    () => removeReducer(topBrandSlice.instance)
+    (st) => { st.dispatch(topBrandSlice.actions.initState(items)) },
+    (st) => { st.dispatch(topBrandSlice.actions.clear()) }
   )
 
-  const brandIds = useSelectSlice(topBrandSlice, (s) => s.ids)
+  const brandIds = useSelectSlice(topBrandSlice, (s) => s.ids) || []
 
   return (
     <section className="bg-gray-200 pt-6">

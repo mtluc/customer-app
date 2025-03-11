@@ -1,6 +1,6 @@
 'use client'
 import autionsSlice from '@/store/slices/auction/auctions.Slice'
-import { useSelectSlice } from '@/store/store'
+import { useSelectSlice } from '@/store/store.hook'
 import { formatNumber } from '@/utils/utils'
 import { LucideGavel, LucideHeart } from 'lucide-react'
 import Image from 'next/image'
@@ -23,7 +23,7 @@ const AutionItem = ({ keyOfList, code }: AutionItemProps) => {
   const { image, name, price, bidNumb } = useSelectSlice(
     autionsSlice,
     (s) => s[keyOfList]?.entities?.[code]
-  )
+  ) || {} as any
   return (
     <div className="m-1 overflow-hidden rounded-md bg-white shadow-[0_0_6px_0px_rgba(0,0,0,0.3)]">
       <Link href={`/auction/${code}`}>

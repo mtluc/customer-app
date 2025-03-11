@@ -1,7 +1,7 @@
 'use client'
 import AutionItem from '@/components/auction/aution-item'
 import autionsSlice, { Auction } from '@/store/slices/auction/auctions.Slice'
-import { useAppStore, useSelectSlice, useSyncSSR } from '@/store/store'
+import { useAppStore, useSelectSlice, useSyncSSR } from '@/store/store.hook'
 
 interface SugguestProps {
   keyOfList: string
@@ -10,21 +10,22 @@ interface SugguestProps {
   title: string
 }
 const Sugguest = ({ title, items, className, keyOfList }: SugguestProps) => {
-  const store = useAppStore()
   useSyncSSR(
-    () =>
+    (store) => {
       store.dispatch(
         autionsSlice.instance.actions.adds({
           key: keyOfList,
           data: items || []
         })
-      ),
-    () =>
+      )
+    },
+    (store) => {
       store.dispatch(
         autionsSlice.instance.actions.removes({
           key: keyOfList
         })
       )
+    }
   )
 
   const ids = useSelectSlice(autionsSlice, (s) => s[keyOfList]?.ids)

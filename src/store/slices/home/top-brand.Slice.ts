@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
-import { createEntityAdapter, EntityState } from "@reduxjs/toolkit";
+import { createEntityAdapter, EntityState, PayloadAction } from "@reduxjs/toolkit";
 import { createSliceApp } from "../slice";
 
 export interface Brand {
@@ -21,7 +21,15 @@ const initialState: TopBrandState = BrandAdapter.getInitialState();
 const topBrandSlice = createSliceApp({
     name: 'top_brand',
     initialState,
-    reducers: {}
+    reducers: {
+        initState: (state, { payload }: PayloadAction<Brand[]>) => {
+            BrandAdapter.removeAll(state);
+            state = BrandAdapter.addMany(state, payload);
+        },
+        clear: (state) => {
+            BrandAdapter.removeAll(state);
+        }
+    }
 })
 
 export default topBrandSlice

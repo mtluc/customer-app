@@ -9,7 +9,7 @@ import {
   SheetTitle
 } from '@/components/ui/sheet'
 import topSearchSlice from '@/store/slices/home/top-search.Slice'
-import { useSelectSlice } from '@/store/store'
+import { useSelectSlice } from '@/store/store.hook'
 import { LucideChevronLeft, LucideSearch, LucideX } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -113,8 +113,8 @@ const SearchBar = ({ open, onOpenChanged }: SearchBarProps) => {
 export default SearchBar
 
 const HostKeywords = memo(() => {
-  const keywordIds = useSelectSlice(topSearchSlice, (s) => s.ids)
-  const datas = useSelectSlice(topSearchSlice, (s) => s.entities)
+  const keywordIds = useSelectSlice(topSearchSlice, (s) => s.ids) || []
+  const datas = useSelectSlice(topSearchSlice, (s) => s.entities) || {}
 
   return (
     <div className="m-auto w-full max-w-4xl flex-1 overflow-auto bg-white px-2">
