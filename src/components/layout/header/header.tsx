@@ -5,9 +5,12 @@ import { LucideSearch } from 'lucide-react'
 import Link from 'next/link'
 import { PropsWithChildren, useState } from 'react'
 import SearchBar from '../search-bar/search-bar'
+import { useSearchParams } from 'next/navigation'
 
 export const Header = ({ children }: PropsWithChildren) => {
   const [openSearch, setOpenSearch] = useState(false)
+  const searchParams = useSearchParams()
+  const keySearch = searchParams.get('key')
   return (
     <>
       <header className="sticky top-0 z-10 bg-gray-50 px-1 py-2 shadow-[0_0_6px_0px_rgba(0,0,0,0.3)]">
@@ -34,7 +37,11 @@ export const Header = ({ children }: PropsWithChildren) => {
             }}
           >
             <LucideSearch className="top-0 my-auto !size-6 stroke-1" />
-            <span className="flex-1 italic">Nhập tên sản phẩm...</span>
+            {keySearch ? (
+              <span className="flex-1">{keySearch}</span>
+            ) : (
+              <span className="flex-1 italic">Nhập tên sản phẩm...</span>
+            )}
           </Button>
         </div>
         {children}

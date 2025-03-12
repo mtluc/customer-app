@@ -34,11 +34,9 @@ const SearchBar = ({ open, onOpenChanged }: SearchBarProps) => {
   const isShowClear = useDeferredValue(showClear)
   useEffect(() => {
     if (open) {
-      setTimeout(() => {
-        requestAnimationFrame(() => {
-          inputRef?.current?.focus?.()
-        })
-      }, 100)
+      requestAnimationFrame(() => {
+        inputRef?.current?.focus?.()
+      })
     }
   }, [inputRef, open])
 
