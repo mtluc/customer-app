@@ -33,7 +33,7 @@ const Sugguest = ({ title, items, className, keyOfList }: SugguestProps) => {
   return (
     <section className={className}>
       <div className="bg-white py-2">
-        <h2 className="sticky top-14 z-[1] bg-inherit px-2 pt-2 text-lg font-semibold">
+        <h2 className="sticky top-[56] z-[1] bg-inherit px-2 py-2 text-lg font-semibold">
           {title}
         </h2>
         <div className="grid grid-cols-3 bg-white p-1 sm:grid-cols-4">

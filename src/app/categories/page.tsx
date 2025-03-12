@@ -2,6 +2,7 @@ import { AppConfig } from '@/utils/config'
 import { cache } from 'react'
 import { Category } from '@/store/slices/home/top-categories.Slice'
 import Categories from '@/components/categories/categories'
+import { Metadata } from 'next'
 
 const loadCategories = cache(async (type?: string) => {
   const res = await fetch(
@@ -13,16 +14,21 @@ const loadCategories = cache(async (type?: string) => {
   if (!res.ok) {
     throw new Error('Lỗi khi lấy danh sách danh mục sản phẩm')
   }
-  return await res.json() as Category[]
+  return (await res.json()) as Category[]
 })
 
-
+export const metadata: Metadata = {
+  title: 'Danh mục sản phẩm - JBB',
+  description: 'Mô tả trang web của bạn'
+}
 
 export default async function CategoriesPage() {
-  const rootCategories: Category[] = await loadCategories();
-  let firstSubCategories: Category[] = [];
+  const rootCategories: Category[] = await loadCategories()
+  let firstSubCategories: Category[] = []
   if (rootCategories?.length) {
-    firstSubCategories = await loadCategories(rootCategories[0].code);
+    firstSubCategories = await loadCategories(rootCategories[0].code)
   }
-  return <Categories rootItems={rootCategories} firstSubs={firstSubCategories} />
+  return (
+    <Categories rootItems={rootCategories} firstSubs={firstSubCategories} />
+  )
 }

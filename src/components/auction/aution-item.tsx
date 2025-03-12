@@ -26,7 +26,7 @@ const AutionItem = ({ keyOfList, code }: AutionItemProps) => {
   )
   return (
     <div className="m-1 overflow-hidden rounded-md bg-white shadow-[0_0_6px_0px_rgba(0,0,0,0.3)]">
-      <Link href={`/auction/${code}`}>
+      <Link href={`/auction/${code}`} prefetch={false}>
         <div className="z-1 relative">
           <Image
             src={image}

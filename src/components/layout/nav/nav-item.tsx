@@ -20,20 +20,18 @@ const NavItem = ({ href, name, Icon, children, count }: NavItemProps) => {
     <Link
       href={href}
       title={name}
-      className="flex-1 p-2 text-center text-primary-foreground"
+      className="flex-1 p-1 pb-2 text-center text-gray-900 hover:text-primary"
+      prefetch={false}
     >
       <div
         className={
-          'group relative m-auto h-8 w-8 rounded-full border' +
-          (isActived
-            ? ' bg-primary-foreground text-primary'
-            : ' border-transparent')
+          'relative m-auto h-8 w-8' + (isActived ? ' text-primary' : '')
         }
       >
         <Icon
           className={
-            'absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 group-hover:stroke-2' +
-            (isActived ? ' w-8/12 stroke-2' : ' w-10/12 stroke-1')
+            'absolute left-1/2 top-1/2 w-8/12 -translate-x-1/2 -translate-y-1/2 stroke-1' +
+            (isActived ? ' stroke-2' : '')
           }
         />
         {count && (
@@ -42,7 +40,11 @@ const NavItem = ({ href, name, Icon, children, count }: NavItemProps) => {
           </div>
         )}
       </div>
-      <span className={'block text-sm' + (isActived ? ' font-semibold' : '')}>
+      <span
+        className={
+          'block text-sm' + (isActived ? ' font-semibold text-primary' : '')
+        }
+      >
         {name}
       </span>
       {children}

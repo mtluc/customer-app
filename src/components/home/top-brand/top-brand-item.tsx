@@ -1,4 +1,3 @@
-
 import { Button } from '@/components/ui/button'
 import Image from '@/components/ui/image'
 import topBrandSlice from '@/store/slices/home/top-brand.Slice'
@@ -10,7 +9,7 @@ const TopBrandItem = ({ code }: { code: string }) => {
   const { imageUrl, label } = useSelectSlice(
     topBrandSlice,
     (s) => s.entities[code]
-  ) 
+  )
   return (
     <div className="m-2 text-center">
       <Button
@@ -18,7 +17,7 @@ const TopBrandItem = ({ code }: { code: string }) => {
         variant="ghost"
         className="h-20 w-20 overflow-hidden rounded-full p-0"
       >
-        <Link href={`/auction?key=${label}`} title={label}>
+        <Link href={`/auction?key=${label}`} title={label} prefetch={false}>
           <Image
             src={imageUrl}
             width={70}

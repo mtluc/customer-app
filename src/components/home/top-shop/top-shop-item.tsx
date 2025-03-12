@@ -17,6 +17,7 @@ const TopShopItem = ({ shopId }: { shopId: string }) => {
           href={`/seller/${code}`}
           className="block h-auto w-full p-2"
           title={label}
+          prefetch={false}
         >
           <Image
             src={imageUrl}
