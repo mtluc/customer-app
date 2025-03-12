@@ -4,10 +4,10 @@ export const metadata: Metadata = {
   title: 'Tìm kiếm sản phẩm đấu giá - JBB',
   description: 'Mô tả trang web của bạn'
 }
-export default function AuctionSearchPage({
+export default async function AuctionSearchPage({
   searchParams
 }: {
   searchParams: URLSearchParams
 }) {
-  return <>{JSON.stringify(searchParams)}</>
+  return <>{JSON.stringify(await searchParams)}</>
 }

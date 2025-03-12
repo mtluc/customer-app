@@ -20,10 +20,11 @@ export const Header = ({ children }: PropsWithChildren) => {
           >
             <Image
               src="/imgs/logo.svg"
-              width={56}
+              width={70}
               height={42}
               alt="jbb"
               className="h-full w-full rounded-md object-contain"
+              priority
             />
           </Link>
           <Button
