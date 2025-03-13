@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { createSliceApp } from "../slice";
 import autionsSlice, { Auction, AuctionListState } from "./auctions.Slice";
 
@@ -17,20 +18,39 @@ const initialState: AuctionSearchState = {
 };
 
 
-export const fetchSearchs = createAsyncThunk<Auction[], { keyword: string, page: number }, {
+export const fetchSearchs = createAsyncThunk<Auction[], { keyword: string | null, category: string | null, page: number }, {
     state: {
         [autionsSlice.instance.name]: AuctionListState,
     }
 }>(
     "auction/search",
-    async ({ keyword, page }, { dispatch, getState }) => {
+    async ({ keyword, page, category }, { dispatch, getState }) => {
+        let uri = '/api/v1/auctions/filter';
+        const param: any = {
+            page: page || 1
+        };
+
+        if (keyword) {
+            param.keyword = keyword;
+        }
+
+        if (category) {
+            uri = `/api/v1/auctions/category/${category}`;
+        } else {
+
+        }
+
+        const paramStr = new URLSearchParams(param).toString();
         const res = await fetch(
-            `/api/jbb/api/v1/auctions/filter?keyword=${encodeURIComponent(keyword)}&page=${page}`
+            `/api/jbb${uri}${paramStr ? "?" + paramStr : ""}`
         );
-        const { autions } = getState();
-        const entities = autions[keyOfList]?.entities || {};
-        const datas = ((await res.json()) || []).filter((x: Auction) => !entities[x.code]);
-        if (page === 1) {
+
+        let datas = [];
+        if (res.ok) {
+            datas = ((await res.json()) || [])
+        }
+
+        if (page === 1 || !res.ok) {
             dispatch(
                 autionsSlice.actions.init({
                     key: keyOfList,
@@ -38,6 +58,9 @@ export const fetchSearchs = createAsyncThunk<Auction[], { keyword: string, page:
                 })
             )
         } else {
+            const { autions } = getState();
+            const entities = autions[keyOfList]?.entities || {};
+            datas = datas.filter((x: Auction) => page === 1 || !entities[x.code]);
             dispatch(
                 autionsSlice.actions.adds({
                     key: keyOfList,
@@ -53,6 +76,9 @@ const autionsSearchSlice = createSliceApp({
     name: 'AUCTION_SEARCH',
     initialState,
     reducers: {
+        toPage: (state, { payload }: PayloadAction<number>) => {
+            state.page = payload;
+        },
         nextPage: (state) => {
             state.page += 1;
         },

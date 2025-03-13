@@ -13,8 +13,10 @@ import { useSelectSlice } from '@/store/store.hook'
 import { LucideChevronLeft, LucideSearch, LucideX } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter, useSearchParams } from 'next/navigation'
 import {
   ChangeEvent,
+  FormEvent,
   memo,
   useDeferredValue,
   useEffect,
@@ -29,6 +31,8 @@ interface SearchBarProps {
 
 const SearchBar = ({ open, onOpenChanged }: SearchBarProps) => {
   const inputRef = useRef<HTMLInputElement>(null)
+  const searchParams = useSearchParams()
+  const router = useRouter()
 
   const [showClear, setShowClear] = useState(false)
   const isShowClear = useDeferredValue(showClear)
@@ -52,6 +56,19 @@ const SearchBar = ({ open, onOpenChanged }: SearchBarProps) => {
     }
   }
 
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const queryObject = Object.fromEntries(searchParams.entries())
+    if (inputRef.current?.value) {
+      queryObject.key = inputRef.current?.value
+    } else {
+      delete queryObject.key
+    }
+    const param = new URLSearchParams(queryObject).toString()
+    router.push('/auction' + param ? '?' + param : '')
+    onOpenChanged(false)
+  }
+
   return (
     <Sheet open={open} onOpenChange={(s) => onOpenChanged(s)}>
       <SheetContent
@@ -70,7 +87,7 @@ const SearchBar = ({ open, onOpenChanged }: SearchBarProps) => {
             >
               <LucideChevronLeft className="!size-8 stroke-1 text-primary-foreground" />
             </Button>
-            <form action="/auction" className="relative flex-1">
+            <form className="relative flex-1" onSubmit={onSubmit}>
               <Button
                 variant="ghost"
                 type="submit"
