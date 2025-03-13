@@ -18,7 +18,7 @@ export const AuctionAdapter = createEntityAdapter<Auction, string>({
     selectId: (e) => e.code
 })
 
-interface AuctionListState {
+export interface AuctionListState {
     [key: string]: EntityState<Auction, string>
 }
 
@@ -28,6 +28,10 @@ const autionsSlice = createSliceApp({
     name: 'autions',
     initialState,
     reducers: {
+        init: (state, action: PayloadAction<{ key: string, data: Auction[] }>) => {
+            const { key, data } = action.payload;
+            state[key] = AuctionAdapter.addMany(AuctionAdapter.getInitialState(), data);
+        },
         adds: (state, action: PayloadAction<{ key: string, data: Auction[] }>) => {
             const { key, data } = action.payload;
             if (state[key]) {

@@ -16,6 +16,7 @@ import categoriesSlice from './slices/categories/categories.Slice'
 import topBrandSlice from './slices/home/top-brand.Slice'
 import topCategoriesSlice from './slices/home/top-categories.Slice'
 import topShopSlice from './slices/home/top-shop.Slice'
+import autionsSearchSlice from './slices/auction/search.Slice'
 
 let store: EnhancedStore
 const staticReducer: SliceApp[] = [
@@ -25,7 +26,8 @@ const staticReducer: SliceApp[] = [
   topSearchSlice,
   topShopSlice,
   topBrandSlice,
-  topCategoriesSlice
+  topCategoriesSlice,
+  autionsSearchSlice
 ]
 
 // Lưu trữ reducers động

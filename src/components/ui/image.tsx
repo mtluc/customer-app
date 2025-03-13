@@ -19,8 +19,8 @@ export default memo(function Image(props: ImageProps) {
     allowedDomains?.some((domain) => props.src.includes(domain))
 
   return isAllowed ? (
-    <NextImage {...props} />
+    <NextImage {...props}/>
   ) : (
-    <img {...props} loading="lazy" alt={props.alt || ''} />
+    <img {...props} loading="lazy" alt={props.alt || ''}/>
   )
 })

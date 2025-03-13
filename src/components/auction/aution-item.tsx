@@ -25,7 +25,7 @@ const AutionItem = ({ keyOfList, code }: AutionItemProps) => {
     (s) => s[keyOfList]?.entities?.[code]
   )
   return (
-    <div className="m-1 overflow-hidden rounded-md bg-white shadow-[0_0_6px_0px_rgba(0,0,0,0.3)]">
+    <div className="m-1 overflow-hidden rounded-md bg-white shadow-[0_0_6px_0px_rgba(0,0,0,0.3)] relative">
       <Link href={`/auction/${code}`} prefetch={false}>
         <div className="z-1 relative">
           <Image
@@ -45,8 +45,8 @@ const AutionItem = ({ keyOfList, code }: AutionItemProps) => {
       </Link>
       <div className="m-1">
         <div className="font-semibold">¥ {formatNumber(price, 0)}</div>
-        <div className="relative h-6">
-          {bidNumb && (
+        <div className="h-6">
+          {bidNumb > 0 && (
             <div className="flex-1 whitespace-nowrap">
               <LucideGavel className="inline-block w-4 -rotate-90 text-primary" />
               <span className="ml-1 text-xs font-semibold">
@@ -56,7 +56,7 @@ const AutionItem = ({ keyOfList, code }: AutionItemProps) => {
             </div>
           )}
 
-          <button type="button" className="absolute right-0 top-0">
+          <button type="button" className="absolute right-1 bottom-1">
             <LucideHeart className="h-6 w-6 stroke-1" />
           </button>
         </div>

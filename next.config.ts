@@ -10,6 +10,9 @@ const nextConfig: NextConfig = {
             }, {
                 protocol: 'https',
                 hostname: 'res.cloudinary.com',
+            },{
+                protocol: 'https',
+                hostname: 's.yimg.jp'
             }
         ],
         //minimumCacheTTL: 60 * 15 //cache lại 15 phút
