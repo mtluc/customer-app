@@ -28,7 +28,7 @@ const Categories = ({
   )
 
   return (
-    <div className="fixed bottom-20 left-0 right-0 top-[56] contain-layout">
+    <div className="fixed bottom-20 left-0 right-0 top-[56px] contain-layout">
       <div className="mx-auto flex h-full w-full max-w-4xl overflow-hidden bg-white py-1">
         <CategoriesRoot />
         <CategoriesSub />

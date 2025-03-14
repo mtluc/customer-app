@@ -104,12 +104,12 @@ export default function AuctionListClient() {
     refLoading.current = loading
   }, [loading])
 
-  const fetchData = () => {
+  const fetchData = (_page: number) => {
     dispatch(
       fetchSearchs({
         keyword: keySearch,
         category,
-        page: 1,
+        page: _page,
         sort,
         itemStatus,
         priceType,
@@ -129,14 +129,14 @@ export default function AuctionListClient() {
       preQuery.current.category != category ||
       preQuery.current.keySearch != keySearch ||
       preQuery.current.sort != sort ||
-      preQuery.current.itemStatus != itemStatus ||
-      preQuery.current.priceType != priceType ||
-      preQuery.current.storeType != storeType ||
-      preQuery.current.minPrice != minPrice ||
-      preQuery.current.isNewListing != isNewListing ||
-      preQuery.current.isEndInHour != isEndInHour ||
-      preQuery.current.isFreeShipping != isFreeShipping ||
-      preQuery.current.maxPrice != maxPrice
+      preQuery.current.itemStatus !== itemStatus ||
+      preQuery.current.priceType !== priceType ||
+      preQuery.current.storeType !== storeType ||
+      preQuery.current.minPrice !== minPrice ||
+      preQuery.current.isNewListing !== isNewListing ||
+      preQuery.current.isEndInHour !== isEndInHour ||
+      preQuery.current.isFreeShipping !== isFreeShipping ||
+      preQuery.current.maxPrice !== maxPrice
     ) {
       preQuery.current = { ...preQuery.current } as any
       if (preQuery.current) {
@@ -154,7 +154,7 @@ export default function AuctionListClient() {
       }
 
       dispatch(autionsSearchSlice.actions.toPage(1))
-      fetchData()
+      fetchData(1)
     }
   }, [
     keySearch,
@@ -177,7 +177,7 @@ export default function AuctionListClient() {
         preQuery.current.page = page
       }
       if (page > 1) {
-        fetchData()
+        fetchData(page)
       }
     }
   }, [page])
@@ -201,7 +201,7 @@ export default function AuctionListClient() {
 
   return (
     <section>
-      <div className="sticky top-[56] z-[1] flex items-center bg-background px-2 py-2">
+      <div className="sticky top-[56px] z-[1] flex items-center bg-background px-2 py-2">
         <LucideGavel className="mr-2 size-6 stroke-2 text-primary" />
         {category ? (
           <div className="font-semibold">{categoryName}</div>

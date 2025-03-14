@@ -18,7 +18,7 @@ const TopCategories = ({ items }: { items: Category[] }) => {
   return (
     <section className="bg-gray-200 pt-6">
       <div className="bg-white px-2 py-2">
-        <h2 className="sticky top-[56] z-[1] bg-inherit py-2 text-lg font-semibold">
+        <h2 className="sticky top-[56px] z-[1] bg-inherit py-2 text-lg font-semibold">
           Danh mục phổ biến
         </h2>
         <div className="-mx-1 grid grid-cols-4 py-2 sm:grid-cols-5">
