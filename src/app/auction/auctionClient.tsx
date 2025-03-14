@@ -220,7 +220,6 @@ export default function AuctionListClient() {
           </>
         )}
       </div>
-
       <div ref={parentRef} className="relative bg-background pb-2">
         <div
           style={{
@@ -263,7 +262,7 @@ export default function AuctionListClient() {
         </div>
         {hasMore && <div ref={lastPostRef}></div>}
       </div>
-      {ids?.length && loading ? null : (
+      {ids?.length || loading ? null : (
         <div className="relative h-screen bg-white">
           <div className="relative top-1/3 -translate-y-1/2 text-center">
             <Image
