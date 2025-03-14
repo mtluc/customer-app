@@ -20,7 +20,7 @@ export const Nav = () => {
         />
         <NavItem
           key={'auction'}
-          href="/auction"
+          href="/auction/history"
           name="Đấu giá"
           Icon={LucideGavel}
           count={1}

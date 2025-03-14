@@ -23,6 +23,14 @@ export const fetchSearchs = createAsyncThunk<Auction[],
         keyword: string | null,
         category: string | null,
         sort: string | null,
+        itemStatus: string | null,
+        priceType: string | null,
+        storeType: string | null,
+        minPrice: string | null,
+        isNewListing: string | null,
+        isEndInHour: string | null,
+        isFreeShipping: string | null,
+        maxPrice: string | null,
         page: number
     }, {
         state: {
@@ -30,22 +38,38 @@ export const fetchSearchs = createAsyncThunk<Auction[],
         }
     }>(
         "auction/search",
-        async ({ keyword, page, category, sort }, { dispatch, getState }) => {
+        async (args, { dispatch, getState }) => {
             let uri = '/api/v1/auctions/filter';
             const param: any = {
-                page: page || 1
+                page: args.page || 1
             };
 
-            if (keyword) {
-                param.keyword = keyword;
+            if (args.keyword) {
+                param.keyword = args.keyword;
             }
 
-            if (category) {
-                uri = `/api/v1/auctions/category/${category}`;
+            if (args.category) {
+                uri = `/api/v1/auctions/category/${args.category}`;
             } else {
-                if (sort) {
-                    param.sortType = sort;
-                }
+                if (args.sort)
+                    param.sortType = args.sort;
+                if (args.itemStatus)
+                    param.itemStatus = args.itemStatus;
+                if (args.priceType)
+                    param.priceType = args.priceType;
+                if (args.storeType)
+                    param.storeType = args.storeType;
+                if (args.minPrice)
+                    param.minPrice = args.minPrice;
+                if (args.isNewListing)
+                    param.isNewListing = args.isNewListing;
+                if (args.isEndInHour)
+                    param.isEndInHour = args.isEndInHour;
+                if (args.isFreeShipping)
+                    param.isFreeShipping = args.isFreeShipping;
+                if (args.maxPrice)
+                    param.maxPrice = args.maxPrice;
+
             }
 
             const paramStr = new URLSearchParams(param).toString();
@@ -58,7 +82,7 @@ export const fetchSearchs = createAsyncThunk<Auction[],
                 datas = ((await res.json()) || [])
             }
 
-            if (page === 1 || !res.ok) {
+            if (args.page === 1 || !res.ok) {
                 dispatch(
                     autionsSlice.actions.init({
                         key: keyOfList,
@@ -68,7 +92,7 @@ export const fetchSearchs = createAsyncThunk<Auction[],
             } else {
                 const { autions } = getState();
                 const entities = autions[keyOfList]?.entities || {};
-                datas = datas.filter((x: Auction) => page === 1 || !entities[x.code]);
+                datas = datas.filter((x: Auction) => args.page === 1 || !entities[x.code]);
                 dispatch(
                     autionsSlice.actions.adds({
                         key: keyOfList,

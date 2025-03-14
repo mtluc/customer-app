@@ -26,18 +26,34 @@ export default function AuctionListClient() {
     keySearch: null | string
     category: null | string
     sort: null | string
-    page: number,
+    itemStatus: null | string
+    priceType: null | string
+    storeType: null | string
+    minPrice: null | string
+    isNewListing: null | string
+    isEndInHour: null | string
+    isFreeShipping: null | string
+    maxPrice: null | string
+    page: number
   } | null>(null)
 
   const keySearch = params.get('key')
   const category = params.get('category')
   const categoryName = params.get('cname')
   const sort = params.get('sort')
+  const itemStatus = params.get('itemStatus')
+  const priceType = params.get('priceType')
+  const storeType = params.get('storeType')
+  const minPrice = params.get('minPrice')
+  const isNewListing = params.get('isNewListing')
+  const isEndInHour = params.get('isEndInHour')
+  const isFreeShipping = params.get('isFreeShipping')
+  const maxPrice = params.get('maxPrice')
 
   const dispatch = useDispatch<any>()
 
   useSyncSSR(
-    () => { },
+    () => {},
     (store) => {
       store.dispatch(autionsSearchSlice.actions.removes())
       store.dispatch(autionsSlice.actions.removes({ key: keyOfList }))
@@ -88,26 +104,71 @@ export default function AuctionListClient() {
     refLoading.current = loading
   }, [loading])
 
+  const fetchData = () => {
+    dispatch(
+      fetchSearchs({
+        keyword: keySearch,
+        category,
+        page: 1,
+        sort,
+        itemStatus,
+        priceType,
+        storeType,
+        minPrice,
+        isNewListing,
+        isEndInHour,
+        isFreeShipping,
+        maxPrice
+      })
+    )
+  }
+
   useEffect(() => {
     if (
       !preQuery.current ||
       preQuery.current.category != category ||
       preQuery.current.keySearch != keySearch ||
-      preQuery.current.sort != sort
+      preQuery.current.sort != sort ||
+      preQuery.current.itemStatus != itemStatus ||
+      preQuery.current.priceType != priceType ||
+      preQuery.current.storeType != storeType ||
+      preQuery.current.minPrice != minPrice ||
+      preQuery.current.isNewListing != isNewListing ||
+      preQuery.current.isEndInHour != isEndInHour ||
+      preQuery.current.isFreeShipping != isFreeShipping ||
+      preQuery.current.maxPrice != maxPrice
     ) {
       preQuery.current = { ...preQuery.current } as any
       if (preQuery.current) {
         preQuery.current.category = category
         preQuery.current.keySearch = keySearch
-        preQuery.current.keySearch = sort
+        preQuery.current.sort = sort
+        preQuery.current.itemStatus = itemStatus
+        preQuery.current.priceType = priceType
+        preQuery.current.storeType = storeType
+        preQuery.current.minPrice = minPrice
+        preQuery.current.isNewListing = isNewListing
+        preQuery.current.isEndInHour = isEndInHour
+        preQuery.current.isFreeShipping = isFreeShipping
+        preQuery.current.maxPrice = maxPrice
       }
 
       dispatch(autionsSearchSlice.actions.toPage(1))
-      dispatch(
-        fetchSearchs({ keyword: keySearch, category, page: 1, sort })
-      )
+      fetchData()
     }
-  }, [keySearch, category, sort])
+  }, [
+    keySearch,
+    category,
+    sort,
+    itemStatus,
+    priceType,
+    storeType,
+    minPrice,
+    isNewListing,
+    isEndInHour,
+    isFreeShipping,
+    maxPrice
+  ])
 
   useEffect(() => {
     if (!preQuery.current || preQuery.current.page != page) {
@@ -116,7 +177,7 @@ export default function AuctionListClient() {
         preQuery.current.page = page
       }
       if (page > 1) {
-        dispatch(fetchSearchs({ keyword: keySearch, category, sort, page }))
+        fetchData()
       }
     }
   }, [page])
@@ -140,19 +201,24 @@ export default function AuctionListClient() {
 
   return (
     <section>
-      <div className='bg-background px-2 py-2 sticky top-[56] z-[1] flex items-center'>
-        <LucideGavel className='size-6 stroke-2 mr-2 text-primary' />
-        {
-          category ?
-            <div className='font-semibold'>{categoryName}</div> :
-            <>
-              <div className='font-semibold flex-1 overflow-hidden whitespace-nowrap text-ellipsis'>
-                Kết quả tìm kiếm {keySearch && <span className='italic text-gray-500 font-normal'>({keySearch})</span>}
-              </div>
-              <Sort />
-              <Filter />
-            </>
-        }
+      <div className="sticky top-[56] z-[1] flex items-center bg-background px-2 py-2">
+        <LucideGavel className="mr-2 size-6 stroke-2 text-primary" />
+        {category ? (
+          <div className="font-semibold">{categoryName}</div>
+        ) : (
+          <>
+            <div className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap font-semibold">
+              Kết quả tìm kiếm{' '}
+              {keySearch && (
+                <span className="font-normal italic text-gray-500">
+                  ({keySearch})
+                </span>
+              )}
+            </div>
+            <Sort />
+            <Filter />
+          </>
+        )}
       </div>
 
       <div ref={parentRef} className="relative bg-background pb-2">
@@ -197,7 +263,7 @@ export default function AuctionListClient() {
         </div>
         {hasMore && <div ref={lastPostRef}></div>}
       </div>
-      {(ids?.length && loading) ? null : (
+      {ids?.length && loading ? null : (
         <div className="relative h-screen bg-white">
           <div className="relative top-1/3 -translate-y-1/2 text-center">
             <Image
