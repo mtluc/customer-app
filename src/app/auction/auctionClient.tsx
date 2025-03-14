@@ -4,6 +4,8 @@
 
 import AutionItem from '@/components/auction/aution-item'
 import AutionItemSkeleton from '@/components/auction/aution-item-skeleton'
+import Filter from '@/components/auction/filter'
+import Sort from '@/components/auction/sort'
 import Image from '@/components/ui/image'
 import autionsSlice from '@/store/slices/auction/auctions.Slice'
 import autionsSearchSlice, {
@@ -11,6 +13,7 @@ import autionsSearchSlice, {
 } from '@/store/slices/auction/search.Slice'
 import { useSelectSlice, useSyncSSR } from '@/store/store.hook'
 import { useVirtualizer } from '@tanstack/react-virtual'
+import { LucideGavel } from 'lucide-react'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
@@ -22,16 +25,19 @@ export default function AuctionListClient() {
   const preQuery = useRef<{
     keySearch: null | string
     category: null | string
-    page: number
+    sort: null | string
+    page: number,
   } | null>(null)
 
   const keySearch = params.get('key')
   const category = params.get('category')
+  const categoryName = params.get('cname')
+  const sort = params.get('sort')
 
   const dispatch = useDispatch<any>()
 
   useSyncSSR(
-    () => {},
+    () => { },
     (store) => {
       store.dispatch(autionsSearchSlice.actions.removes())
       store.dispatch(autionsSlice.actions.removes({ key: keyOfList }))
@@ -86,20 +92,22 @@ export default function AuctionListClient() {
     if (
       !preQuery.current ||
       preQuery.current.category != category ||
-      preQuery.current.keySearch != keySearch
+      preQuery.current.keySearch != keySearch ||
+      preQuery.current.sort != sort
     ) {
       preQuery.current = { ...preQuery.current } as any
       if (preQuery.current) {
         preQuery.current.category = category
         preQuery.current.keySearch = keySearch
+        preQuery.current.keySearch = sort
       }
 
       dispatch(autionsSearchSlice.actions.toPage(1))
       dispatch(
-        fetchSearchs({ keyword: keySearch, category: category, page: 1 })
+        fetchSearchs({ keyword: keySearch, category, page: 1, sort })
       )
     }
-  }, [keySearch, category])
+  }, [keySearch, category, sort])
 
   useEffect(() => {
     if (!preQuery.current || preQuery.current.page != page) {
@@ -108,7 +116,7 @@ export default function AuctionListClient() {
         preQuery.current.page = page
       }
       if (page > 1) {
-        dispatch(fetchSearchs({ keyword: keySearch, category: category, page }))
+        dispatch(fetchSearchs({ keyword: keySearch, category, sort, page }))
       }
     }
   }, [page])
@@ -132,7 +140,22 @@ export default function AuctionListClient() {
 
   return (
     <section>
-      <div ref={parentRef} className="relative bg-white py-2">
+      <div className='bg-background px-2 py-2 sticky top-[56] z-[1] flex items-center'>
+        <LucideGavel className='size-6 stroke-2 mr-2 text-primary' />
+        {
+          category ?
+            <div className='font-semibold'>{categoryName}</div> :
+            <>
+              <div className='font-semibold flex-1 overflow-hidden whitespace-nowrap text-ellipsis'>
+                Kết quả tìm kiếm {keySearch && <span className='italic text-gray-500 font-normal'>({keySearch})</span>}
+              </div>
+              <Sort />
+              <Filter />
+            </>
+        }
+      </div>
+
+      <div ref={parentRef} className="relative bg-background pb-2">
         <div
           style={{
             height: rowVirtualizer.getTotalSize(),
@@ -174,7 +197,7 @@ export default function AuctionListClient() {
         </div>
         {hasMore && <div ref={lastPostRef}></div>}
       </div>
-      {ids?.length && loading ? null : (
+      {(ids?.length && loading) ? null : (
         <div className="relative h-screen bg-white">
           <div className="relative top-1/3 -translate-y-1/2 text-center">
             <Image

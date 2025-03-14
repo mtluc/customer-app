@@ -35,7 +35,7 @@ const SubHeader = () => {
         variant="link"
         className="p-1 pr-4 text-foreground hover:text-primary"
       >
-        <Link href={`/auction?category=${category.code}`} prefetch={false}>
+        <Link href={`/auction?category=${category.code}&cname=${encodeURIComponent(category.label)}`} prefetch={false}>
           {category.label}
         </Link>
       </Button>
@@ -94,7 +94,7 @@ const SubItem = ({ id, parentId }: { id: string; parentId: string }) => {
             variant="link"
             className="block h-auto overflow-hidden text-ellipsis p-1 py-2 text-foreground hover:text-primary"
           >
-            <Link href={`/auction?category=${category.code}`} prefetch={false}>
+            <Link href={`/auction?category=${category.code}&cname=${encodeURIComponent(category.label)}`} prefetch={false}>
               {category.label}
             </Link>
           </Button>

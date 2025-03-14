@@ -57,6 +57,9 @@ const SearchBar = ({ open, onOpenChanged }: SearchBarProps) => {
   }
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    if(1){
+      return
+    }
     e.preventDefault()
     const queryObject = Object.fromEntries(searchParams.entries())
     if (inputRef.current?.value) {

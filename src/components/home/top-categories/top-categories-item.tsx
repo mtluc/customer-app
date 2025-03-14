@@ -17,7 +17,7 @@ const TopCategoryItem = ({ code }: { code: string }) => {
       asChild
       className="group block h-auto whitespace-normal text-center hover:bg-transparent"
     >
-      <Link href={`/auction?category=${code}`} prefetch={false}>
+      <Link href={`/auction?category=${code}&cname=${encodeURIComponent(label)}`} prefetch={false}>
         <div className="m-auto w-20 overflow-hidden rounded-full">
           <Image
             src={imageUrl}
