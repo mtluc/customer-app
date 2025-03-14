@@ -27,7 +27,7 @@ const TopSearch = () => {
                 className="m-1 h-auto rounded-full bg-gray-100 px-2.5 py-1 shadow-sm transition-all duration-300 hover:bg-primary hover:text-primary-foreground"
               >
                 <Link
-                  href={`/auction?key=${encodeURIComponent(id)}`}
+                  href={`/auction?key=${encodeURIComponent(datas[id].keyword)}`}
                   prefetch={false}
                 >
                   {' '}
