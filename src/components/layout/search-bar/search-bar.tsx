@@ -57,10 +57,17 @@ const SearchBar = ({ open, onOpenChanged }: SearchBarProps) => {
   }
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     if (1) {
+      router.push(
+        '/auction?' +
+          new URLSearchParams({
+            key: inputRef.current?.value || ''
+          }).toString()
+      )
+      onOpenChanged(false)
       return
     }
-    e.preventDefault()
     const queryObject = Object.fromEntries(searchParams.entries())
     if (inputRef.current?.value) {
       queryObject.key = inputRef.current?.value
