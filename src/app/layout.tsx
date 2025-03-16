@@ -1,9 +1,6 @@
 import '@/app/globals.scss'
-import { ReduxProvider } from '@/store/providers'
-import { Footer } from '@/components/layout/footer/footer'
-import { Header } from '@/components/layout/header/header'
-import { Nav } from '@/components/layout/nav/navs'
 import { initState } from '@/store/initState'
+import { ReduxProvider } from '@/store/providers'
 import { Viewport } from 'next'
 
 export const viewport: Viewport = {
@@ -23,13 +20,7 @@ export default async function RootLayout({
   return (
     <html lang="vi">
       <body className="flex min-h-screen flex-col bg-gray-200">
-        <ReduxProvider preloadedState={initialCount}>
-          <Header>
-            <Nav />
-          </Header>
-          <main className="mx-auto mb-[70px] w-full max-w-4xl">{children}</main>
-          <Footer />
-        </ReduxProvider>
+        <ReduxProvider preloadedState={initialCount}>{children}</ReduxProvider>
       </body>
     </html>
   )

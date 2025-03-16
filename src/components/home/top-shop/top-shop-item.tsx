@@ -14,7 +14,7 @@ const TopShopItem = ({ shopId }: { shopId: string }) => {
     <div className="m-1 flex items-center overflow-hidden rounded-xl border">
       <Button asChild variant="ghost">
         <Link
-          href={`/seller/${code}`}
+          href={`/seller/${shopId}`}
           className="block h-auto w-full p-2"
           title={label}
           prefetch={false}

@@ -1,5 +1,6 @@
 'use client'
 import { Button } from '@/components/ui/button'
+import Image from '@/components/ui/image'
 import { Input } from '@/components/ui/input'
 import {
   Sheet,
@@ -11,7 +12,6 @@ import {
 import topSearchSlice from '@/store/slices/home/top-search.Slice'
 import { useSelectSlice } from '@/store/store.hook'
 import { LucideChevronLeft, LucideSearch, LucideX } from 'lucide-react'
-import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import {
@@ -57,7 +57,7 @@ const SearchBar = ({ open, onOpenChanged }: SearchBarProps) => {
   }
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-    if(1){
+    if (1) {
       return
     }
     e.preventDefault()
