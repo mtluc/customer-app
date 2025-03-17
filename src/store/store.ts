@@ -10,13 +10,13 @@ import {
 import { thunk } from 'redux-thunk'
 import appSlice from './slices/appSlice'
 import autionsSlice from './slices/auction/auctions.Slice'
-import topSearchSlice from './slices/home/top-search.Slice'
-import { SliceApp } from './slices/slice'
 import categoriesSlice from './slices/categories/categories.Slice'
 import topBrandSlice from './slices/home/top-brand.Slice'
 import topCategoriesSlice from './slices/home/top-categories.Slice'
+import topSearchSlice from './slices/home/top-search.Slice'
 import topShopSlice from './slices/home/top-shop.Slice'
-import autionsSearchSlice from './slices/auction/search.Slice'
+import infiniteSlice from './slices/infinite.Slice.ts/infinite.Slice'
+import { SliceApp } from './slices/slice'
 
 let store: EnhancedStore
 const staticReducer: SliceApp[] = [
@@ -27,7 +27,7 @@ const staticReducer: SliceApp[] = [
   topShopSlice,
   topBrandSlice,
   topCategoriesSlice,
-  autionsSearchSlice
+  infiniteSlice
 ]
 
 // Lưu trữ reducers động

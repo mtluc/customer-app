@@ -29,6 +29,6 @@ export function createSliceApp<
   return {
     instance: instance,
     extraReducers: options.extraReducers,
-    actions: instance.actions
+    actions: instance.actions,
   }
 }

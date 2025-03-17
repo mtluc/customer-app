@@ -40,6 +40,11 @@ const autionsSlice = createSliceApp({
                 state[key] = AuctionAdapter.addMany(AuctionAdapter.getInitialState(), data);
             }
         },
+        clearData: (state, action: PayloadAction<string>) => {
+            if (state[action.payload]) {
+                AuctionAdapter.removeAll(state[action.payload]);
+            }
+        },
         removes: (state, action: PayloadAction<{ key: string }>) => {
             delete state[action.payload.key];
         }

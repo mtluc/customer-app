@@ -17,15 +17,16 @@ export function useSyncSSR(
     clientUnmounted: false
   });
 
-  if (!initRef.current.inited) {
+  if (!initRef.current.inited && typeof window == undefined) {
     initRef.current.inited = true;
     mount(store);
   }
 
   useEffect(() => {
     const _initRef = initRef;
-    if (_initRef.current.clientUnmounted) {
+    if (_initRef.current.clientUnmounted || !_initRef.current.inited) {
       mount(store);
+      _initRef.current.inited = true;
       _initRef.current.clientUnmounted = false;
     }
     return () => {

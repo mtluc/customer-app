@@ -23,12 +23,12 @@ const getSellerInfo = async (code: string) => {
 }
 
 export type SellerPageProps = {
-  params: {
+  params: Promise<{
     code: string
-  }
-  searchParams: {
+  }>
+  searchParams: Promise<{
     keyword?: string
-  }
+  }>
 }
 
 export async function generateMetadata({ params }: SellerPageProps) {

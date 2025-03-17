@@ -9,6 +9,7 @@ import {
   SheetHeader,
   SheetTitle
 } from '@/components/ui/sheet'
+import appSlice from '@/store/slices/appSlice'
 import topSearchSlice from '@/store/slices/home/top-search.Slice'
 import { useSelectSlice } from '@/store/store.hook'
 import { LucideChevronLeft, LucideSearch, LucideX } from 'lucide-react'
@@ -33,6 +34,8 @@ const SearchBar = ({ open, onOpenChanged }: SearchBarProps) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const searchParams = useSearchParams()
   const router = useRouter()
+  const searchPath = useSelectSlice(appSlice, (s) => s.searchPath) || '/auction';
+  const searchPlaceholder = useSelectSlice(appSlice, (s) => s.searchPlaceholder) || 'Nhập tên sản phẩm cần tìm...';
 
   const [showClear, setShowClear] = useState(false)
   const isShowClear = useDeferredValue(showClear)
@@ -60,10 +63,10 @@ const SearchBar = ({ open, onOpenChanged }: SearchBarProps) => {
     e.preventDefault()
     if (1) {
       router.push(
-        '/auction?' +
-          new URLSearchParams({
-            key: inputRef.current?.value || ''
-          }).toString()
+        searchPath + '?' +
+        new URLSearchParams({
+          key: inputRef.current?.value || ''
+        }).toString()
       )
       onOpenChanged(false)
       return
@@ -75,7 +78,7 @@ const SearchBar = ({ open, onOpenChanged }: SearchBarProps) => {
       delete queryObject.key
     }
     const param = new URLSearchParams(queryObject).toString()
-    router.push('/auction' + param ? '?' + param : '')
+    router.push(searchPath + param ? '?' + param : '')
     onOpenChanged(false)
   }
 
@@ -113,7 +116,7 @@ const SearchBar = ({ open, onOpenChanged }: SearchBarProps) => {
                   'h-10 rounded-full bg-primary-foreground bg-white stroke-1 pl-11 placeholder:italic' +
                   (isShowClear ? ' pr-10' : '')
                 }
-                placeholder="Nhập tên sản phẩm cần tìm..."
+                placeholder={searchPlaceholder}
                 onChange={(e) => textChanged(e)}
                 autoFocus
               />
@@ -141,6 +144,8 @@ const HostKeywords = memo(
   ({ openChanged }: { openChanged: (open: boolean) => void }) => {
     const keywordIds = useSelectSlice(topSearchSlice, (s) => s.ids) || []
     const datas = useSelectSlice(topSearchSlice, (s) => s.entities) || {}
+    const searchPath = useSelectSlice(appSlice, (s) => s.searchPath) || '/auction';
+
 
     return (
       <div className="m-auto w-full max-w-4xl flex-1 overflow-auto bg-white px-2">
@@ -158,7 +163,7 @@ const HostKeywords = memo(
                 onClick={() => openChanged(false)}
               >
                 <Link
-                  href={`/auction?key=${encodeURIComponent(datas[id].keyword)}`}
+                  href={`${searchPath}?key=${encodeURIComponent(datas[id].keyword)}`}
                   prefetch={false}
                 >
                   <div className="flex-1 pr-2">{datas[id].keyword}</div>

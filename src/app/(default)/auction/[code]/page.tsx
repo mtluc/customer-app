@@ -1,11 +1,10 @@
-'use server'
-
 import { Auction } from '@/store/slices/auction/auctions.Slice'
 import { AppConfig } from '@/utils/config'
+import { Metadata } from 'next'
 import { cache } from 'react'
 
 type AuctionDetailPageProps = {
-  params: { code: string }
+  params: Promise<{ code: string }>
 }
 
 const loadAuction = cache(async (code: string) => {
@@ -15,6 +14,11 @@ const loadAuction = cache(async (code: string) => {
   }
   return (await res.json()) as Auction
 })
+
+export const metadata: Metadata = {
+  title: 'Tìm kiếm sản phẩm đấu giá - JBB',
+  description: 'Mô tả trang web của bạn'
+}
 
 export default async function AuctionDetailPage({
   params

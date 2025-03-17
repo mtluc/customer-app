@@ -5,7 +5,6 @@ import { formatNumber } from '@/utils/utils'
 import { memo } from 'react'
 
 const SellerClient = ({
-  keyword,
   seller
 }: {
   keyword?: string
