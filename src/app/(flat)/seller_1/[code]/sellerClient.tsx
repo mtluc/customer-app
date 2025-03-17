@@ -10,7 +10,6 @@ const SellerClient = ({
   keyword?: string
   seller: Seller
 }) => {
-  console.log(seller)
   return (
     <>
       <section className="flex bg-background px-1 py-4">

@@ -19,7 +19,6 @@ const SellerClient = ({
   keyword?: string
   seller: Seller
 }) => {
-  console.log(seller)
   const dispatch = useDispatch<any>()
   const keyOfList = `Seller_${seller.sellerCode}`
 
