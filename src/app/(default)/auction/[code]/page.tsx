@@ -1,4 +1,5 @@
-import { Auction } from '@/store/slices/auction/auctions.Slice'
+import AuctionDetail from '@/components/auction/auction-detail/auction-detail'
+import { IAuctionDetail } from '@/store/slices/auction/auction-detail.Slice'
 import { AppConfig } from '@/utils/config'
 import { Metadata } from 'next'
 import { cache } from 'react'
@@ -8,11 +9,11 @@ type AuctionDetailPageProps = {
 }
 
 const loadAuction = cache(async (code: string) => {
-  const res = await fetch(`${AppConfig.JBB_API}/api/v1/auctions${code}`)
+  const res = await fetch(`${AppConfig.JBB_API}/api/v1/auctions/${code}`)
   if (!res.ok) {
     throw new Error('Lỗi khi lấy thông tin sản phẩm')
   }
-  return (await res.json()) as Auction
+  return (await res.json()) as IAuctionDetail
 })
 
 export const metadata: Metadata = {
@@ -26,5 +27,10 @@ export default async function AuctionDetailPage({
   const { code } = await params
 
   const item = await loadAuction(code)
-  return <>{JSON.stringify(item)}</>
+  console.log(item)
+  return (
+    <>
+      <AuctionDetail item={item} />
+    </>
+  )
 }
