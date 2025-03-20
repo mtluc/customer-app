@@ -74,6 +74,7 @@ const AuctionImageBox = ({ images }: { images: string[] }) => {
                 alt="Product Image"
                 width={400}
                 height={400}
+                priority
                 className="aspect-square w-full object-cover"
               />
             </CarouselItem>
@@ -107,6 +108,7 @@ const AuctionImageBox = ({ images }: { images: string[] }) => {
                         alt="Product Image Fullscreen"
                         width={600}
                         height={600}
+                        priority
                         className="aspect-square w-full object-cover"
                       />
                     </CarouselItem>
