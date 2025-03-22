@@ -1,4 +1,4 @@
-export type Seller = {
+export type ISeller = {
     sellerCode: string,
     sellerName: string,
     sellerIcon: string,

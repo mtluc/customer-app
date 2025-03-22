@@ -18,6 +18,9 @@ export enum enumBidStatus {
 
 }
 export interface IAuctionDetail {
+    /**
+     * Mở rộng thời gian đấu
+     */
     automaticExtension: boolean,
     /**
      * Lượt đấu giá

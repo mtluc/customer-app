@@ -18,6 +18,28 @@ export function formatNumber(value: number, decimalPlaces: number = 2, locales: 
   }).format(value);
 }
 
+export function formatDateTime(date: Date | string | number, format: string = "YYYY-MM-DD HH:mm:ss"): string {
+  if (!(date instanceof Date)) {
+    date = new Date(date);
+    if (isNaN(date.getTime())) return "Invalid Date";
+  }
+
+  const pad = (num: number): string => num.toString().padStart(2, "0");
+
+  const map: Record<string, string> = {
+    YYYY: date.getFullYear().toString(),
+    MM: pad(date.getMonth() + 1),
+    DD: pad(date.getDate()),
+    HH: pad(date.getHours()),
+    mm: pad(date.getMinutes()),
+    ss: pad(date.getSeconds()),
+    AMPM: date.getHours() >= 12 ? "PM" : "AM",
+    hh: pad(date.getHours() % 12 || 12)
+  };
+
+  return format.replace(/YYYY|MM|DD|HH|hh|mm|ss|AMPM/g, (match) => map[match]);
+}
+
 /**
  * chuyển object sang querystring
  * @param obj
