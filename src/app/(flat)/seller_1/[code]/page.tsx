@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import SellerClient from './sellerClient'
 import { AppConfig } from '@/utils/config'
-import { Seller } from '@/store/slices/seller/seller.Slice'
+import { ISeller } from '@/store/slices/seller/seller.Slice'
 import { unstable_cache } from 'next/cache'
 
 const getSellerInfo = async (code: string) => {
@@ -13,7 +13,7 @@ const getSellerInfo = async (code: string) => {
       if (!res.ok) {
         throw new Error('Lỗi khi lấy thông tin người bán')
       }
-      return (await res.json()) as Seller
+      return (await res.json()) as ISeller
     },
     [`seller`, code],
     {

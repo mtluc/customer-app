@@ -2,6 +2,25 @@ import { NextConfig } from "next";
 
 
 const nextConfig: NextConfig = {
+    async headers() {
+        return [
+            {
+                source: "/(.*)", // Áp dụng cho tất cả các route
+                headers: [
+                    {
+                        key: "Content-Security-Policy",
+                        value:
+                            // "script-src 'self' https://translate.google.com 'unsafe-inline'; " +
+                            "frame-src 'self' https://translate.google.com; " +
+                            // "connect-src 'self' https://translate.googleapis.com; " +
+                            // "img-src 'self' https://translate.google.com data:; " +
+                            // "style-src 'self' 'unsafe-inline';",
+                            ""
+                    },
+                ],
+            },
+        ];
+    },
     images: {
         remotePatterns: [
             {

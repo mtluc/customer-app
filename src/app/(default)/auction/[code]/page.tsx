@@ -16,18 +16,18 @@ const loadAuction = cache(async (code: string) => {
   return (await res.json()) as IAuctionDetail
 })
 
-export const metadata: Metadata = {
-  title: 'Tìm kiếm sản phẩm đấu giá - JBB',
-  description: 'Mô tả trang web của bạn'
+export async function generateMetadata({ params }: AuctionDetailPageProps) {
+  return {
+    title: `Sản phẩm: ${(await params).code}`,
+    description: `Sản phẩm: ${(await params).code}`
+  } as Metadata
 }
 
 export default async function AuctionDetailPage({
   params
 }: AuctionDetailPageProps) {
   const { code } = await params
-
   const item = await loadAuction(code)
-  console.log(item)
   return (
     <>
       <AuctionDetail item={item} />

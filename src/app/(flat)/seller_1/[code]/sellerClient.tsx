@@ -1,15 +1,10 @@
 'use client'
 import Image from '@/components/ui/image'
-import { Seller } from '@/store/slices/seller/seller.Slice'
+import { ISeller } from '@/store/slices/seller/seller.Slice'
 import { formatNumber } from '@/utils/utils'
 import { memo } from 'react'
 
-const SellerClient = ({
-  seller
-}: {
-  keyword?: string
-  seller: Seller
-}) => {
+const SellerClient = ({ seller }: { keyword?: string; seller: ISeller }) => {
   return (
     <>
       <section className="flex bg-background px-1 py-4">

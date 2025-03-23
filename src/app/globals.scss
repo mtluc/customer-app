@@ -74,6 +74,20 @@ html {
   line-height: 1.25;
 }
 
+body {
+  top: 0px !important;
+}
+
 input {
   touch-action: manipulation;
+}
+
+.skiptranslate {
+  display: none;
+}
+
+.skiptranslate>iframe {
+  height: 0 !important;
+  border-style: none;
+  box-shadow: none;
 }

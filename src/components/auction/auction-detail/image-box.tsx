@@ -23,22 +23,36 @@ import { createPortal } from 'react-dom'
 const AuctionImageBox = ({ images }: { images: string[] }) => {
   const [isFullScreen, setIsFullScreen] = useState(false)
   const [isSwiping, setIsSwiping] = useState(false)
-  const [touchStart, setTouchStart] = useState(0)
+  const [touchStart, setTouchStart] = useState<{ x: number; y: number }>({
+    x: 0,
+    y: 0
+  })
   const [api, setApi] = useState<CarouselApi>()
   const [current, setCurrent] = useState(0)
+  let holdTimeout: NodeJS.Timeout
 
   const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStart(e.touches[0].clientX)
+    setTouchStart({
+      x: e.touches[0].clientX,
+      y: e.touches[0].clientY
+    })
     setIsSwiping(false)
+    holdTimeout = setTimeout(() => {
+      setIsSwiping(true) // Đánh dấu là giữ lâu
+    }, 100)
   }
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    if (Math.abs(e.touches[0].clientX - touchStart) > 10) {
+    if (
+      Math.abs(e.touches[0].clientX - touchStart.x) > 10 ||
+      Math.abs(e.touches[0].clientY - touchStart.y) > 10
+    ) {
       setIsSwiping(true)
     }
   }
 
   const handleTouchEnd = () => {
+    clearTimeout(holdTimeout)
     if (!isSwiping) {
       setIsFullScreen(true)
     }
