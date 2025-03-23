@@ -17,6 +17,7 @@ import AuctionImageBox from './image-box'
 import TimeLeft from './time-left'
 
 const AuctionDetail = ({ item }: { item: IAuctionDetail }) => {
+  console.log(item)
   const seller = {
     sellerCode: item.sellerCode,
     sellerName: item.sellerName,
@@ -51,7 +52,7 @@ const AuctionDetail = ({ item }: { item: IAuctionDetail }) => {
             <LucideHeart className="!size-8 stroke-1" />
           </Button>
         </div>
-        {item.buyNowPrice && (
+        {item.buyNowPrice > 0 && (
           <div className="mt-4 flex items-center">
             <div className="flex-1">
               <div>Giá mua ngay:</div>
@@ -135,7 +136,7 @@ const AuctionDetail = ({ item }: { item: IAuctionDetail }) => {
         <AuctionDescription description={item.description} code={item.code} />
       </div>
 
-      {item.relates?.length && (
+      {item.relates?.length > 0 && (
         <Sugguest
           key={`relates_${item.code}`}
           keyOfList={`relates_${item.code}`}
@@ -145,7 +146,7 @@ const AuctionDetail = ({ item }: { item: IAuctionDetail }) => {
         />
       )}
 
-      {item.suggests?.length && (
+      {item.suggests?.length > 0 && (
         <Sugguest
           key={`suggests_${item.code}`}
           keyOfList={`suggests_${item.code}`}

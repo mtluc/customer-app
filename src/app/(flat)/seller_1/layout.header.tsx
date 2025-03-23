@@ -105,7 +105,7 @@ const Header = ({ keyword, placeholder }: HeaderProps) => {
             onChange={(e) => textChanged(e)}
             autoFocus
           />
-          {isShowClear && (
+          {isShowClear ? (
             <Button
               variant="ghost"
               type="reset"
@@ -114,7 +114,7 @@ const Header = ({ keyword, placeholder }: HeaderProps) => {
             >
               <LucideX className="!size-6 stroke-1 text-red-500" />
             </Button>
-          )}
+          ) : null}
         </form>
       </div>
     </header>

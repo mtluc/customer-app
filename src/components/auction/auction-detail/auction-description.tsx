@@ -15,17 +15,21 @@ const AuctionDescription = ({
 }) => {
   const [showMore, setShowMore] = useState(false)
   const desRef = useRef<HTMLDivElement>(null)
-  const obsTslRef = useRef<MutationObserver>(null)
+  const lastContextRef = useRef<string | null>(null)
   const [translatedContent, setTranslatedContent] = useState('')
   const [showTranslated, setShowTranslated] = useState(false)
-  const descriptionContent = useMemo(() => {
+
+  const content1 = useMemo(() => {
     if (showTranslated && translatedContent) {
       return translatedContent
     }
     return description
-  }, [description, translatedContent, showTranslated])
+  }, [description, showTranslated, translatedContent])
 
   useEffect(() => {
+    const date = new Date()
+    date.setTime(date.getTime() + 7 * 24 * 60 * 60 * 1000)
+    document.cookie = 'googtrans=/ja/vi; path=/; expires=' + date.toUTCString()
     let script: any = null
     // Kiểm tra nếu Google Translate chưa được nhúng
     if (
@@ -33,19 +37,12 @@ const AuctionDescription = ({
       !(window as any).google &&
       !(window as any).google?.translate
     ) {
-      const date = new Date()
-      date.setTime(date.getTime() + 7 * 24 * 60 * 60 * 1000)
-      document.cookie =
-        'googtrans=/ja/vi; path=/; expires=' +
-        date.toUTCString() +
-        '; HttpOnly; Secure; SameSite=None;'
       script = document.createElement('script')
       script.src =
         'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit'
       script.async = true
       document.body.appendChild(script)
     }
-
     return () => {
       if (script) {
         document.body.removeChild(script)
@@ -54,28 +51,32 @@ const AuctionDescription = ({
   }, [])
 
   useEffect(() => {
-    const _obsTslRef = obsTslRef
     const _desRef = desRef
-    if (!_obsTslRef.current && _desRef.current) {
-      const lastContent = _desRef.current.innerText
-      _obsTslRef.current = new MutationObserver((mutations, obs) => {
-        if (_desRef.current?.innerText != lastContent) {
-          console.log('Dịch xong rồi!')
-          setTranslatedContent(_desRef.current?.innerHTML || '')
-          setShowTranslated(true)
-          obs.disconnect()
-        }
-      })
-      _obsTslRef.current.observe(_desRef.current, {
-        childList: true,
-        subtree: true
-      })
+    const _lastContextRef = lastContextRef
+    if (!_desRef.current) {
+      return
     }
 
-    return () => {
-      _obsTslRef.current?.disconnect()
+    if (_lastContextRef.current === null) {
+      _lastContextRef.current = _desRef.current.innerText
     }
-  }, [])
+    const obs = new MutationObserver((mutations, obs) => {
+      if (_desRef.current?.innerText != _lastContextRef.current) {
+        console.log('Dịch xong rồi!')
+        setTranslatedContent(_desRef.current?.innerHTML || '')
+        setShowTranslated(true)
+        obs.disconnect()
+      }
+    })
+    obs.observe(_desRef.current, {
+      childList: true,
+      subtree: true
+    })
+
+    return () => {
+      obs.disconnect()
+    }
+  }, [description])
 
   const translateDiv = () => {
     if (showTranslated) {
@@ -114,12 +115,12 @@ const AuctionDescription = ({
         ref={desRef}
         id="translate-content"
         className={
-          'translate relative w-full overflow-x-auto overflow-y-hidden' +
-          (showMore ? ' max-h-max' : ' max-h-80')
+          'relative w-full overflow-x-auto overflow-y-hidden' +
+          (showMore ? ' max-h-max' : ' max-h-80') +
+          (translatedContent ? '' : ' translate')
         }
-        dangerouslySetInnerHTML={{ __html: descriptionContent }}
+        dangerouslySetInnerHTML={{ __html: content1 }}
       ></div>
-
       <div className="relative right-0 text-center">
         {!showMore && (
           <div className="absolute bottom-full left-0 h-40 w-full bg-gradient-to-t from-background to-transparent"></div>

@@ -72,3 +72,25 @@ export function devLog(msg: any) {
 export function newUUID() {
   return uuidv4();
 }
+
+export function removeStylesFromHTML(htmlString: string): string {
+  if (!htmlString) return "";
+
+  if (typeof window === "undefined") {
+    // 🚀 Chạy trên Server: Dùng jsdom
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const { JSDOM } = require("jsdom"); // Chỉ import khi chạy trên server
+    const dom = new JSDOM(htmlString);
+    const document = dom.window.document;
+
+    document.querySelectorAll("[style]").forEach((el: any) => el.removeAttribute("style"));
+    return document.body.innerHTML;
+  } else {
+    // 🌐 Chạy trên Client: Dùng DOMParser
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlString, "text/html");
+
+    doc.querySelectorAll("[style]").forEach((el) => el.removeAttribute("style"));
+    return doc.body.innerHTML;
+  }
+}

@@ -15,7 +15,7 @@ const nextConfig: NextConfig = {
                             // "connect-src 'self' https://translate.googleapis.com; " +
                             // "img-src 'self' https://translate.google.com data:; " +
                             // "style-src 'self' 'unsafe-inline';",
-                            ""
+                            ''
                     },
                 ],
             },

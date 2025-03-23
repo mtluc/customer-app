@@ -1,3 +1,4 @@
+'use client'
 import { useState, useEffect, memo } from 'react'
 
 interface TimeLeftProps {
@@ -20,43 +21,35 @@ const calculateTimeLeft = (targetTime: string) => {
 }
 
 export default memo(function TimeLeft({ targetTime }: TimeLeftProps) {
-  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(targetTime))
+  const [timeLeft, setTimeLeft] = useState<string | null>(null)
 
   useEffect(() => {
     const timer = setInterval(() => {
       const timeLeft = calculateTimeLeft(targetTime)
-      setTimeLeft(timeLeft)
       if (
         timeLeft.days === 0 &&
         timeLeft.hours === 0 &&
         timeLeft.minutes === 0 &&
         timeLeft.seconds === 0
       ) {
+        setTimeLeft('Đã kết thúc')
         clearInterval(timer)
+      } else {
+        setTimeLeft(
+          `⏳${
+            timeLeft.days
+              ? `${timeLeft.days < 10 ? `0${timeLeft.days}` : timeLeft.days} ngày`
+              : ''
+          } 
+          ${timeLeft.hours < 10 ? `0${timeLeft.hours}` : timeLeft.hours}:
+          ${timeLeft.minutes < 10 ? `0${timeLeft.minutes}` : timeLeft.minutes}:
+          ${timeLeft.seconds < 10 ? `0${timeLeft.seconds}` : timeLeft.seconds}`
+        )
       }
     }, 1000)
 
     return () => clearInterval(timer) // Cleanup khi component unmount
   }, [targetTime])
 
-  return (
-    <>
-      {timeLeft.days === 0 &&
-      timeLeft.hours === 0 &&
-      timeLeft.minutes === 0 &&
-      timeLeft.seconds === 0 ? (
-        <span>Đã kết thúc</span>
-      ) : (
-        <span>
-          ⏳{' '}
-          {timeLeft.days
-            ? `${timeLeft.days < 10 ? `0${timeLeft.days}` : timeLeft.days} ngày`
-            : ''}{' '}
-          {timeLeft.hours < 10 ? `0${timeLeft.hours}` : timeLeft.hours}:
-          {timeLeft.minutes < 10 ? `0${timeLeft.minutes}` : timeLeft.minutes}:
-          {timeLeft.seconds < 10 ? `0${timeLeft.seconds}` : timeLeft.seconds}
-        </span>
-      )}
-    </>
-  )
+  return timeLeft
 })

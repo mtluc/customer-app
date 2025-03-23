@@ -110,11 +110,11 @@ const SellerClient = ({
         <Seller seller={seller} />
         <div className="mt-2 border-t p-2 pb-0 pt-3 font-semibold">
           Sản phẩm
-          {keyword && (
+          {keyword ? (
             <span className="ml-2 text-sm font-normal italic text-gray-500">
               (Tìm theo: {keyword})
             </span>
-          )}
+          ) : null}
         </div>
       </section>
       <section>
