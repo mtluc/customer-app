@@ -1,6 +1,6 @@
 'use client'
 import { memo, ReactNode } from 'react'
-import Header from '../layout.header'
+import Header from './layout.header'
 import { useSearchParams } from 'next/navigation'
 
 const Layout = ({ children }: { children: ReactNode }) => {
