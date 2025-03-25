@@ -20,7 +20,7 @@ const Header = () => {
         }
       }
 
-      router.push('/')
+      router.back()
     } catch {
       router.push('/')
     }
