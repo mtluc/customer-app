@@ -52,12 +52,12 @@ export default function RegisterPage() {
                 <Link href="/login" className='text-primary ml-2'>Đăng nhập ngay</Link>
             </div>
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-2 space-y-4 mt-8">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="w-full grid grid-cols-1 sm:grid-cols-2 gap-8 mt-10">
                     <FormField
                         control={form.control}
                         name="lastName"
                         render={({ field, fieldState: { invalid } }) => (
-                            <FormItem>
+                            <FormItem >
                                 <FormLabel className='text-foreground'>Họ (*)</FormLabel>
                                 <FormControl>
                                     <Input {...field} className={'border-t-0 border-x-0 shadow-none rounded-none focus-visible:ring-0 focus:border-[#0d6efd]' + (invalid ? ' border-red-500 focus:border-red-500' : '')} autoFocus />
@@ -71,7 +71,7 @@ export default function RegisterPage() {
                         control={form.control}
                         name="firstName"
                         render={({ field, fieldState: { invalid } }) => (
-                            <FormItem>
+                            <FormItem >
                                 <FormLabel className='text-foreground'>Tên (*)</FormLabel>
                                 <FormControl>
                                     <Input {...field} className={'border-t-0 border-x-0 shadow-none rounded-none focus-visible:ring-0 focus:border-[#0d6efd]' + (invalid ? ' border-red-500 focus:border-red-500' : '')} autoFocus />
@@ -127,7 +127,7 @@ export default function RegisterPage() {
                         control={form.control}
                         name="confirmPassword"
                         render={({ field, fieldState: { invalid } }) => (
-                            <FormItem>
+                            <FormItem >
                                 <FormLabel className='text-foreground'>Xác nhận mật khẩu (*)</FormLabel>
                                 <FormControl>
                                     <Input type="password"  {...field} className={'border-t-0 border-x-0 shadow-none rounded-none focus-visible:ring-0 focus:border-[#0d6efd]' + (invalid ? ' border-red-500 focus:border-red-500' : '')} />
@@ -141,17 +141,19 @@ export default function RegisterPage() {
                         control={form.control}
                         name="terms"
                         render={({ field }) => (
-                            <FormItem className='items-center'>
+                            <FormItem className='sm:col-span-2'>
                                 <FormControl>
-                                    <Checkbox checked={field.value}
+                                    <Checkbox
+                                        className='size-5 align-middle'
+                                        checked={field.value}
                                         onCheckedChange={field.onChange} />
                                 </FormControl>
-                                <FormLabel className='text-foreground ml-2 font-normal'>Tôi đồng ý với chính sách & điều khoản của JBB</FormLabel>
+                                <FormLabel className='text-foreground ml-2 font-normal align-middle'>Tôi đồng ý với chính sách & điều khoản của JBB</FormLabel>
                             </FormItem>
                         )}
                     />
 
-                    <div className='my-4 space-y-2'>
+                    <div className='my-4 sm:col-span-2'>
                         <Button className='w-full'>Đăng nhập</Button>
                     </div>
                 </form>

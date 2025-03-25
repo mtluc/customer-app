@@ -39,7 +39,7 @@ export default function LoginPage() {
         <Link href="/register" className='text-primary ml-2'>Tạo tài khoản ngay</Link>
       </div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mt-8">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="w-full grid grid-cols-1 gap-8 mt-10">
           <FormField
             control={form.control}
             name="email"
@@ -68,7 +68,7 @@ export default function LoginPage() {
             )}
           />
 
-          <div className='my-4 text-right'>
+          <div className=' text-right'>
             <Link href="/forgot-password" className='text-primary'>Quên mật khẩu?</Link>
           </div>
           <div className='my-4'>
