@@ -95,3 +95,7 @@ input {
 #translate-content * {
   max-width: 100%;
 }
+
+.max-dh-screen {
+  max-height: calc(var(--vh) * 1);
+}

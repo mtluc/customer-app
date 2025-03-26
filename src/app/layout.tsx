@@ -19,7 +19,7 @@ export default async function RootLayout({
   const initialCount = await initState()
   return (
     <html lang="vi">
-      <body className="notranslate flex min-h-screen flex-col bg-gray-200">
+      <body className="notranslate flex min-h-[100dvh] flex-col bg-gray-200">
         <ReduxProvider preloadedState={initialCount}>{children}</ReduxProvider>
       </body>
     </html>

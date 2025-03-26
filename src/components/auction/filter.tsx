@@ -78,18 +78,6 @@ const AuctionFilter = () => {
     maxPrice
   ])
 
-  const [maxHeight, setMaxHeight] = useState('100%')
-
-  useEffect(() => {
-    const updateHeight = () => {
-      setMaxHeight((window.visualViewport?.height || window.innerHeight) + 'px')
-    }
-
-    window.visualViewport?.addEventListener('resize', updateHeight)
-    return () =>
-      window.visualViewport?.removeEventListener('resize', updateHeight)
-  }, [])
-
   const resetForm = () => {
     setQueryState(defaultState)
   }
@@ -133,10 +121,10 @@ const AuctionFilter = () => {
       </SheetTrigger>
       <SheetContent
         side={'bottom'}
-        className="flex flex-col gap-0 p-0 text-left"
-        style={{
-          maxHeight: maxHeight
-        }}
+        className="max-dh-screen flex flex-col gap-0 p-0 text-left"
+        // style={{
+        //   maxHeight: maxHeight
+        // }}
       >
         <SheetHeader className="border-b">
           <SheetTitle className="m-auto w-full max-w-4xl p-1 py-2 text-center font-semibold">
@@ -289,7 +277,6 @@ const AuctionFilter = () => {
                   </div>
                 </div>
               </div>
-
               <div className="mt-8">
                 <div className="pb-4 font-semibold">Lọc theo giá</div>
                 <RadioGroup
