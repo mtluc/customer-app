@@ -10,7 +10,15 @@ export enum DeviceMode {
 export interface AppState {
   device: DeviceMode,
   searchPath: string,
-  searchPlaceholder: string
+  searchPlaceholder: string,
+  user: {
+    id: string,
+    name: string,
+    lastName?: string,
+    firstName?: string,
+    isVerified?: boolean,
+    email: string
+  } | null
 }
 
 export const updateState = createAsyncThunk(
@@ -25,7 +33,7 @@ export const updateState = createAsyncThunk(
 
 const appSlice = createSliceApp({
   name: 'app',
-  initialState: { device: DeviceMode.mobile, searchPath: '', searchPlaceholder: '' } as AppState,
+  initialState: { device: DeviceMode.mobile, searchPath: '', searchPlaceholder: '', user: {} } as AppState,
   reducers: {
     setSearchInfo: (state, { payload: { path, placeholder } }: PayloadAction<{
       path: string,
@@ -33,6 +41,16 @@ const appSlice = createSliceApp({
     }>) => {
       state.searchPath = path;
       state.searchPlaceholder = placeholder;
+    },
+    setUserInfo: (state, { payload }: PayloadAction<{
+      id: string,
+      name: string,
+      lastName?: string,
+      firstName?: string,
+      isVerified?: boolean,
+      email: string
+    } | undefined>) => {
+      state.user = payload ? { ...state.user, ...payload } : null
     }
   },
   extraReducers: (builder) => {

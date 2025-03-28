@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
+import Alert from '@/components/alert/alert'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -11,16 +12,31 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { LucideLoader2 } from 'lucide-react'
 import Link from 'next/link'
-import { useEffect } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { useEffect, useRef, useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+
 const formSchema = z.object({
   email: z.string().email('Email không hợp lệ'),
   password: z.string().min(1, 'Mật khẩu không được để trống')
 })
 
 export default function LoginPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [, setTransition] = useTransition();
+  const [isLoading, setIsLoading] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const alertMessageRef = useRef<{
+    message: string,
+    onClose?: () => void
+  }>({
+    message: ''
+  });
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     mode: 'onChange',
@@ -30,15 +46,36 @@ export default function LoginPage() {
     }
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (isLoading) return
+    try {
+      setTransition(() => setIsLoading(true))
+      const result = await fetch(`/api/auth`,{
+        method: 'POST',
+        body: JSON.stringify(values)
+      })
+
+      if (result?.ok) {
+        const callbackUrl = await searchParams.get("callbackUrl");
+        router.push(callbackUrl || "/")
+      } else {
+        throw (await result.json() as any).detail || "Có lỗi xảy ra";
+      }
+    } catch (error: any) {
+      alertMessageRef.current = {
+        message: error.message || error
+      };
+      setShowAlert(true);
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   useEffect(() => {
     document.title = 'Đăng nhập - JBB'
   }, [])
 
-  return (
+  return <>
     <div className="min-h-[calc(100dvh-3.3rem)] bg-background p-4">
       <h1 className="text-2xl font-semibold">Đăng nhập</h1>
       <div className="my-1">
@@ -106,5 +143,18 @@ export default function LoginPage() {
         </form>
       </Form>
     </div>
-  )
+
+    {
+      isLoading &&
+      <div className="fixed top-0 right-0 left-0 bottom-0 bg-gray-500 bg-opacity-35 flex items-center justify-center">
+        <LucideLoader2 className="size-8 animate-spin stroke-1 text-white" />
+      </div>
+    }
+
+    <Alert open={showAlert} onOpenChanged={setShowAlert}>
+      <div className='text-center'>
+        {alertMessageRef.current.message}
+      </div>
+    </Alert>
+  </>
 }
