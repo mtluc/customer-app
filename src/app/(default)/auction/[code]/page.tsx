@@ -1,4 +1,5 @@
 import AuctionDetail from '@/components/auction/auction-detail/auction-detail'
+import { fetchSSR } from '@/middleware/auth'
 import { IAuctionDetail } from '@/store/slices/auction/auction-detail.Slice'
 import { AppConfig } from '@/utils/config'
 import { Metadata } from 'next'
@@ -9,7 +10,7 @@ type AuctionDetailPageProps = {
 }
 
 const loadAuction = cache(async (code: string) => {
-  const res = await fetch(`${AppConfig.JBB_API}/api/v1/auctions/${code}`)
+  const res = await fetchSSR(`${AppConfig.JBB_API}/api/v1/auctions/${code}`)
   if (!res.ok) {
     throw new Error('Lỗi khi lấy thông tin sản phẩm')
   }

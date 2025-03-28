@@ -3,9 +3,10 @@ import { cache } from 'react'
 import { Category } from '@/store/slices/home/top-categories.Slice'
 import Categories from '@/components/categories/categories'
 import { Metadata } from 'next'
+import { fetchSSR } from '@/middleware/auth'
 
 const loadCategories = cache(async (type?: string) => {
-  const res = await fetch(
+  const res = await fetchSSR(
     `${AppConfig.JBB_API}/api/v1/categories/getmenu${type ? `?parentCode=${type}` : ''}`,
     {
       next: { revalidate: 7 * 24 * 60 * 60 } // Cache 1 tuần

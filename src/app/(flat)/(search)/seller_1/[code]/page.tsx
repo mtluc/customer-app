@@ -3,11 +3,12 @@ import SellerClient from './sellerClient'
 import { AppConfig } from '@/utils/config'
 import { ISeller } from '@/store/slices/seller/seller.Slice'
 import { unstable_cache } from 'next/cache'
+import { fetchSSR } from '@/middleware/auth'
 
 const getSellerInfo = async (code: string) => {
   return await unstable_cache(
     async () => {
-      const res = await fetch(
+      const res = await fetchSSR(
         `${AppConfig.JBB_API}/api/v1/auctions/seller/${code}/rating`
       )
       if (!res.ok) {

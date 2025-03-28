@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import { produce } from 'immer'
 import { createSliceApp } from './slice'
@@ -50,7 +51,7 @@ const appSlice = createSliceApp({
       isVerified?: boolean,
       email: string
     } | undefined>) => {
-      state.user = payload ? { ...state.user, ...payload } : null
+      state.user = payload ? { ...state.user, ...payload } : {} as any
     }
   },
   extraReducers: (builder) => {

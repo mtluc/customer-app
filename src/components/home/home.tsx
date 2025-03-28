@@ -1,3 +1,4 @@
+import { fetchSSR } from '@/middleware/auth'
 import { AppConfig } from '@/utils/config'
 import { cache } from 'react'
 import Sugguest from './sugguest/sugguest'
@@ -7,7 +8,7 @@ import TopSearch from './top-search/top-search'
 import TopShop from './top-shop/top-shop'
 
 const loadSugguest = cache(async (type: number) => {
-  const res = await fetch(
+  const res = await fetchSSR(
     `${AppConfig.JBB_API}/api/v1/auctions/sugguest/${type}`,
     {
       next: { revalidate: 3 } // Cache trong 5 phút (300 giây)
@@ -20,7 +21,7 @@ const loadSugguest = cache(async (type: number) => {
 })
 
 const loadTopShop = cache(async () => {
-  const res = await fetch(`${AppConfig.JBB_API}/api/v1/common/topsellers`, {
+  const res = await fetchSSR(`${AppConfig.JBB_API}/api/v1/common/topsellers`, {
     next: { revalidate: 1 * 24 * 60 * 60 }
   })
   if (!res.ok) {
@@ -30,7 +31,7 @@ const loadTopShop = cache(async () => {
 })
 
 const loadTopCategories = cache(async () => {
-  const res = await fetch(
+  const res = await fetchSSR(
     `${AppConfig.JBB_API}/api/v1/common/popularcategories`,
     {
       next: { revalidate: 1 * 24 * 60 * 60 }
@@ -43,9 +44,12 @@ const loadTopCategories = cache(async () => {
 })
 
 const loadTopBands = cache(async () => {
-  const res = await fetch(`${AppConfig.JBB_API}/api/v1/common/popularbrands`, {
-    next: { revalidate: 1 * 24 * 60 * 60 }
-  })
+  const res = await fetchSSR(
+    `${AppConfig.JBB_API}/api/v1/common/popularbrands`,
+    {
+      next: { revalidate: 1 * 24 * 60 * 60 }
+    }
+  )
   if (!res.ok) {
     throw new Error('Lỗi khi lấy danh sách danh mục phổ biến')
   }
