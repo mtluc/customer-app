@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 import Sugguest from '@/components/home/sugguest/sugguest'
 import Seller from '@/components/seller/seller'

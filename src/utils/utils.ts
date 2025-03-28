@@ -94,3 +94,24 @@ export function removeStylesFromHTML(htmlString: string): string {
     return doc.body.innerHTML;
   }
 }
+
+export function getResponError(error: any): string {
+  if (error) {
+    if (typeof error === 'string') {
+      return error;
+    }
+    if (error.errors?.[0]?.description) {
+      return error.errors?.[0]?.description
+    }
+
+    if (error.detail) {
+      return error.detail
+    }
+
+    if (error.message) {
+      return error.message
+    }
+
+  }
+  return 'Có lỗi xảy ra!';
+}

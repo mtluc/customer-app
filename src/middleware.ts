@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { forWardApiMiddleware } from "./middleware/forward-api";
 import { authMiddleware } from "./middleware/auth";
 
-export type middlewareFn = (req: NextRequest,middlewares: middlewareFn[])=> Promise<NextResponse>
+export type middlewareFn = (req: NextRequest, middlewares: middlewareFn[]) => Promise<NextResponse>
 
 function applyMiddlewares(...middlewares: middlewareFn[]) {
     return async (req: NextRequest) => {
@@ -14,5 +14,6 @@ function applyMiddlewares(...middlewares: middlewareFn[]) {
 }
 export const middleware = applyMiddlewares(authMiddleware, forWardApiMiddleware);
 export const config = {
-    matcher: "/:path*"
+    matcher: "/:path*",
+    runtime: "nodejs",
 };

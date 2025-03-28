@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import VerifyEmail from '@/components/verify/verify-email'
+import { getResponError } from '@/utils/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -38,7 +39,7 @@ const formSchema = z
   })
 
 export default function RegisterPage() {
-  const router = useRouter();
+  const router = useRouter()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     mode: 'onChange',
@@ -52,55 +53,43 @@ export default function RegisterPage() {
     }
   })
 
-  const [, startTransition] = useTransition();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [openVerifyEmail, setOpenVerifyEmail] = useState(false);
-  const [openNotifyVerifyEmail, setNotifyVerifyEmail] = useState(false);
-  const [openVerifyEmailSuccess, setOpenVerifyEmailSuccess] = useState(false);
+  const [, startTransition] = useTransition()
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [open, setOpen] = useState(false)
+  const [openVerifyEmail, setOpenVerifyEmail] = useState(false)
+  const [openNotifyVerifyEmail, setNotifyVerifyEmail] = useState(false)
+  const [openVerifyEmailSuccess, setOpenVerifyEmailSuccess] = useState(false)
   const verifyEmailOpenChange = (open: boolean) => {
-    setOpenVerifyEmail(open);
+    setOpenVerifyEmail(open)
     if (!open) {
-      router.push("/login");
+      router.push('/login')
     }
   }
 
-  const errorRef = useRef<string>('');
+  const errorRef = useRef<string>('')
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      startTransition(() => setIsSubmitting(true));
-      const res = await fetch(
-        `/api/jbb/api/v1/appUsers/register`,
-        {
-          method: 'POST',
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(values),
-        }
-      );
+      startTransition(() => setIsSubmitting(true))
+      const res = await fetch(`/api/jbb/api/v1/appUsers/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(values)
+      })
 
       if (res.ok) {
-        setNotifyVerifyEmail(true);
+        setNotifyVerifyEmail(true)
       } else {
-        const error = await res.json();
-        if (error) {
-          if (error.errors?.[0]?.description) {
-            throw error.errors?.[0]?.description
-          } else if (error.detail) {
-            throw error.detail
-          } else {
-            throw 'Có lỗi xảy ra!'
-          }
-        }
+        throw getResponError(await res.json())
       }
     } catch (error: any) {
-      errorRef.current = error;
-      setOpen(true);
-      console.error(error);
+      console.error(error)
+      errorRef.current = getResponError(error)
+      setOpen(true)
     } finally {
-      startTransition(() => setIsSubmitting(false));
+      startTransition(() => setIsSubmitting(false))
     }
   }
 
@@ -214,7 +203,9 @@ export default function RegisterPage() {
               name="password"
               render={({ field, fieldState: { invalid } }) => (
                 <FormItem>
-                  <FormLabel className="text-foreground">Mật khẩu (*)</FormLabel>
+                  <FormLabel className="text-foreground">
+                    Mật khẩu (*)
+                  </FormLabel>
                   <FormControl>
                     <Input
                       type="password"
@@ -273,62 +264,90 @@ export default function RegisterPage() {
             />
 
             <div className="my-4 sm:col-span-2">
-              <Button className="w-full" disabled={isSubmitting}>{isSubmitting ? "Đang đăng ký..." : "Đăng ký"}</Button>
+              <Button className="w-full" disabled={isSubmitting}>
+                {isSubmitting ? 'Đang đăng ký...' : 'Đăng ký'}
+              </Button>
             </div>
           </form>
         </Form>
       </div>
 
-
-
-      <VerifyEmail email={form.getValues().email}
+      <VerifyEmail
+        email={form.getValues().email}
         sendCodeUrl={`/api/jbb/api/v1/appUsers/email/send-code`}
-        verifyUrl='/api/jbb/api/v1/appUsers/email/verify'
+        verifyUrl="/api/jbb/api/v1/appUsers/email/verify"
         open={openVerifyEmail}
-        title='Xác thực email của bạn'
+        title="Xác thực email của bạn"
         onOpenChanged={verifyEmailOpenChange}
         onVerifySuccess={() => setOpenVerifyEmailSuccess(true)}
       />
 
-      <Alert open={openNotifyVerifyEmail} onOpenChanged={(_) => {
-        setNotifyVerifyEmail(_);
-        if (!_) {
-          verifyEmailOpenChange(_);
-        }
-      }} title='Đăng ký tài khoản thành công' buttons={<>
-        <Button className='w-52 max-w-full' variant='outline' onClick={() => {
-          verifyEmailOpenChange(false);
-        }}>Đăng nhập</Button>
+      <Alert
+        open={openNotifyVerifyEmail}
+        onOpenChanged={(_) => {
+          setNotifyVerifyEmail(_)
+          if (!_) {
+            verifyEmailOpenChange(_)
+          }
+        }}
+        title="Đăng ký tài khoản thành công"
+        buttons={
+          <>
+            <Button
+              className="w-52 max-w-full"
+              variant="outline"
+              onClick={() => {
+                verifyEmailOpenChange(false)
+              }}
+            >
+              Đăng nhập
+            </Button>
 
-        <Button className='w-52 max-w-full' onClick={() => {
-          verifyEmailOpenChange(true);
-        }}>Xác thực tài khoản</Button>
-      </>}>
-        <div className='text-center'>
-          Chúc mừng bạn đăng ký tài khoản thành công! Xác thực tài khoản để nhận nhiều ưu đãi
+            <Button
+              className="w-52 max-w-full"
+              onClick={() => {
+                verifyEmailOpenChange(true)
+              }}
+            >
+              Xác thực tài khoản
+            </Button>
+          </>
+        }
+      >
+        <div className="text-center">
+          Chúc mừng bạn đăng ký tài khoản thành công! Xác thực tài khoản để nhận
+          nhiều ưu đãi
         </div>
       </Alert>
 
-      <Alert open={openVerifyEmailSuccess} onOpenChanged={(_) => {
-        setOpenVerifyEmailSuccess(_);
-        if (!_) {
-          verifyEmailOpenChange(_);
+      <Alert
+        open={openVerifyEmailSuccess}
+        onOpenChanged={(_) => {
+          setOpenVerifyEmailSuccess(_)
+          if (!_) {
+            verifyEmailOpenChange(_)
+          }
+        }}
+        title="Xác thực tài khoản thành công"
+        buttons={
+          <>
+            <Button
+              className="w-52 max-w-full"
+              onClick={() => {
+                setOpenVerifyEmailSuccess(false)
+                verifyEmailOpenChange(false)
+              }}
+            >
+              Đăng nhập
+            </Button>
+          </>
         }
-      }} title='Xác thực tài khoản thành công' buttons={<>
-        <Button className='w-52 max-w-full' onClick={() => {
-          setOpenVerifyEmailSuccess(false);
-          verifyEmailOpenChange(false);
-        }}>Đăng nhập</Button>
-      </>}>
-        <div className='text-center'>
-          Đăng nhập ngay để trải nghiệm mua sắm
-        </div>
+      >
+        <div className="text-center">Đăng nhập ngay để trải nghiệm mua sắm</div>
       </Alert>
 
       <Alert open={open} onOpenChanged={setOpen}>
-        <div className='text-center'>
-          {errorRef.current}
-        </div>
+        <div className="text-center">{errorRef.current}</div>
       </Alert>
     </>
   )

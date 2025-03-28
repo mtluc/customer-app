@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import appSlice from '@/store/slices/appSlice'
+import { getResponError } from '@/utils/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LucideLoader2 } from 'lucide-react'
 import Link from 'next/link'
@@ -73,11 +74,11 @@ export default function LoginPage() {
         const callbackUrl = await searchParams.get('callbackUrl')
         router.push(callbackUrl || '/')
       } else {
-        throw ((await result.json()) as any).detail || 'Có lỗi xảy ra'
+        throw getResponError(await result.json())
       }
     } catch (error: any) {
       alertMessageRef.current = {
-        message: error.message || error
+        message: getResponError(error)
       }
       setShowAlert(true)
     } finally {
@@ -162,7 +163,7 @@ export default function LoginPage() {
       </div>
 
       {isLoading && (
-        <div className="fixed bottom-0 left-0 right-0 top-0 flex items-center justify-center bg-gray-500 bg-opacity-35">
+        <div className="fixed bottom-0 left-0 right-0 top-0 z-50 flex items-center justify-center bg-gray-500 bg-opacity-35">
           <LucideLoader2 className="size-8 animate-spin stroke-1 text-white" />
         </div>
       )}

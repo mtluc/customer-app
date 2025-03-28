@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
-
 import { Button } from '@/components/ui/button'
 import appSlice from '@/store/slices/appSlice'
 import { useSelectSlice } from '@/store/store.hook'

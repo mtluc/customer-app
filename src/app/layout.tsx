@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import '@/app/globals.scss'
 import { getServerAuthState } from '@/middleware/auth'
 import { initState } from '@/store/initState'
@@ -18,8 +17,8 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const session = await getServerAuthState();
-  const _initState = await initState();
+  const session = await getServerAuthState()
+  const _initState = await initState()
   if (session) {
     _initState.app.user = {
       ...session,

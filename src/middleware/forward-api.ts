@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { middlewareFn } from "@/middleware";
 import { AppConfig } from "@/utils/config";
-import { devLog } from "@/utils/utils";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function forWardApiMiddleware(req: NextRequest, middlewares: middlewareFn[]) {
@@ -34,7 +33,7 @@ export async function forWardApiMiddleware(req: NextRequest, middlewares: middle
             headers: headers,
             body,
         });
-        devLog(fullUrl);
+        console.log(fullUrl);
 
         if (res.ok) {
             resObj.contentType = res.headers.get("content-type") || "application/octet-stream";
@@ -46,7 +45,7 @@ export async function forWardApiMiddleware(req: NextRequest, middlewares: middle
                 resObj.body = await res.arrayBuffer();
             }
         } else {
-            console.error("error", fullUrl,res.status);
+            console.error("error", fullUrl, res.status);
             const text = await res.text();
             let error: any = "";
             try {
@@ -91,6 +90,6 @@ export async function forWardApiMiddleware(req: NextRequest, middlewares: middle
     return NextResponse.next();
 }
 
-export const config = {
+const config = {
     paths: ["/api/jbb/"],
 };

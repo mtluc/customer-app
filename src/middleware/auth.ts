@@ -12,6 +12,7 @@ const config = {
         "/api/jbb/api/v1/appUsers/login",
         "/api/jbb/api/v1/appUsers/register",
         "/api/jbb/api/v1/appUsers/forgot-password",
+        "/api/jbb/api/v1/appUsers/reset-password",
         "/api/jbb/api/v1/appUsers/email"
     ]
 }
