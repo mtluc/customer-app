@@ -15,5 +15,4 @@ function applyMiddlewares(...middlewares: middlewareFn[]) {
 export const middleware = applyMiddlewares(authMiddleware, forWardApiMiddleware);
 export const config = {
     matcher: "/:path*",
-    runtime: "nodejs",
 };
