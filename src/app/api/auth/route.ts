@@ -1,5 +1,5 @@
+import { setAuthCookie } from "@/utils/auth-cookie";
 import { AppConfig } from "@/utils/config";
-import { encode } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -28,19 +28,6 @@ export async function POST(req: NextRequest) {
             return NextResponse.json(data, { status: 401 });
         }
 
-        // ✅ Tạo JWT
-        const token = await encode({
-            secret: process.env.NEXTAUTH_SECRET!,
-            token: {
-                id: data.id,
-                lastName: data.lastName,
-                firstName: data.firstName,
-                name: [data.lastName, data.firstName].filter(x => x).join(" "),
-                email: data.email,
-                accessToken: data.token,
-            },
-        });
-
         const response = NextResponse.json({
             id: data.id,
             lastName: data.lastName,
@@ -50,13 +37,14 @@ export async function POST(req: NextRequest) {
             email: data.email
         }, { status: 200 });
 
-        response.cookies.set("auth-token", token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            path: "/",
-            maxAge: 60 * 60 * 24 * 7,
-            sameSite: "strict"
-        });
+        await setAuthCookie(response.cookies, {
+            id: data.id,
+            lastName: data.lastName,
+            firstName: data.firstName,
+            name: [data.lastName, data.firstName].filter(x => x).join(" "),
+            email: data.email,
+            accessToken: data.token
+        })
 
         return response;
 

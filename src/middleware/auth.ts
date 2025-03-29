@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { middlewareFn } from "@/middleware";
+import { deleteAuthCookie, getAuthCookie, getServerAuthCookie, setAuthCookie } from "@/utils/auth-cookie";
 import { AppConfig } from "@/utils/config";
-import { encode, getToken } from "next-auth/jwt";
 import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
@@ -20,11 +20,7 @@ const config = {
 
 export async function authMiddleware(req: NextRequest, middlewares: middlewareFn[]) {
     const { pathname } = req.nextUrl;
-    const token = await getToken({
-        req,
-        secret: process.env.NEXTAUTH_SECRET!,
-        cookieName: "auth-token", // Lấy JWT từ cookie
-    });
+    const token = await getAuthCookie(req);
 
     if (config.paths.find(x => pathname.startsWith(x)) && !config.excludePaths.find(x => pathname.startsWith(x))) {
         let isAuth = true;
@@ -48,27 +44,17 @@ export async function authMiddleware(req: NextRequest, middlewares: middlewareFn
 
                 const resObj = await resRefresh.json();
                 if (resRefresh.ok && resObj?.token) {
-                    const _token = await encode({
-                        secret: process.env.NEXTAUTH_SECRET!,
-                        token: {
-                            name: token.name,
-                            email: token.email,
-                            id: token.id,
-                            lastName: token.lastName,
-                            firstName: token.firstName,
-                            accessToken: resObj?.token,
-                        },
-                    });
 
                     req.headers.set("Authorization", "Bearer " + resObj?.token);
                     res = await middlewares[0](req, middlewares.slice(1))
 
-                    res.cookies.set("auth-token", _token, {
-                        httpOnly: true,
-                        secure: process.env.NODE_ENV === "production",
-                        path: "/",
-                        maxAge: 60 * 60 * 24 * 7,
-                        sameSite: "strict"
+                    await setAuthCookie(res.cookies, {
+                        name: token.name,
+                        email: token.email,
+                        id: token.id,
+                        lastName: token.lastName,
+                        firstName: token.firstName,
+                        accessToken: resObj?.token
                     });
                 } else {
                     isAuth = false;
@@ -79,24 +65,13 @@ export async function authMiddleware(req: NextRequest, middlewares: middlewareFn
                 const remainingSeconds = (token.exp as number) - now; // Tính thời gian còn lại (giây)
 
                 if (remainingSeconds <= 60 * 60 * 24 * 6) {
-                    const _token = await encode({
-                        secret: process.env.NEXTAUTH_SECRET!,
-                        token: {
-                            name: token.name,
-                            email: token.email,
-                            id: token.id,
-                            lastName: token.lastName,
-                            firstName: token.firstName,
-                            accessToken: token.accessToken,
-                        },
-                    });
-
-                    res.cookies.set("auth-token", _token, {
-                        httpOnly: true,
-                        secure: process.env.NODE_ENV === "production",
-                        path: "/",
-                        maxAge: 60 * 60 * 24 * 7,
-                        sameSite: "strict"
+                    await setAuthCookie(res.cookies, {
+                        name: token.name,
+                        email: token.email,
+                        id: token.id,
+                        lastName: token.lastName,
+                        firstName: token.firstName,
+                        accessToken: token.accessToken
                     });
                 }
             }
@@ -115,13 +90,7 @@ export async function authMiddleware(req: NextRequest, middlewares: middlewareFn
                 res = NextResponse.redirect(new URL("/login?callbackUrl=" + encodeURIComponent(pathname), req.url));
             }
             if (token) {
-                res.cookies.set("auth-token", "", {
-                    httpOnly: true,
-                    secure: process.env.NODE_ENV === "production",
-                    path: "/",
-                    expires: new Date(0),
-                    sameSite: "strict"
-                });
+                await deleteAuthCookie(res.cookies);
             }
 
             return res;
@@ -138,59 +107,19 @@ export async function authMiddleware(req: NextRequest, middlewares: middlewareFn
             const remainingSeconds = (token.exp as number) - now; // Tính thời gian còn lại (giây)
 
             if (remainingSeconds <= 60 * 60 * 24 * 6) {
-                const _token = await encode({
-                    secret: process.env.NEXTAUTH_SECRET!,
-                    token: {
-                        name: token.name,
-                        email: token.email,
-                        id: token.id,
-                        lastName: token.lastName,
-                        firstName: token.firstName,
-                        accessToken: token.accessToken,
-                    },
-                });
-
-                res.cookies.set("auth-token", _token, {
-                    httpOnly: true,
-                    secure: process.env.NODE_ENV === "production",
-                    path: "/",
-                    maxAge: 60 * 60 * 24 * 7,
-                    sameSite: "strict"
-                });
+                await setAuthCookie(res.cookies, {
+                    name: token.name,
+                    email: token.email,
+                    id: token.id,
+                    lastName: token.lastName,
+                    firstName: token.firstName,
+                    accessToken: token.accessToken
+                })
             }
         }
         return res;
     }
     return NextResponse.next();
-}
-
-export async function getServerAuthState(): Promise<{
-    id: string,
-    lastName?: string,
-    firstName?: string
-    name?: string,
-    email: string,
-    accessToken: string,
-    exp: number
-} | null> {
-    const headersList = await headers();
-    const host = headersList.get("host");
-    const protocol = headersList.get("x-forwarded-proto") || "http";
-    const currentPath = headersList.get("referer") || "/";
-    const currentUrl = `${protocol}://${host}${new URL(currentPath, `${protocol}://${host}`).pathname}`;
-    const cookieStore = await cookies();
-    const req = new NextRequest(currentUrl);
-
-    cookieStore.getAll().map(c => {
-
-        req.cookies.set(c.name, c.value)
-
-    })
-    return await getToken({
-        req: req,
-        secret: process.env.NEXTAUTH_SECRET!,
-        cookieName: 'auth-token'
-    }) as any;
 }
 
 export async function fetchSSR(url: string, init?: RequestInit) {
@@ -199,7 +128,7 @@ export async function fetchSSR(url: string, init?: RequestInit) {
 
     const { pathname } = new URL(url, "http://localhost:3000");
     if (config.paths.find(x => pathname.startsWith(x) || ('/api/jbb' + pathname).startsWith(x)) && !config.excludePaths.find(x => pathname.startsWith(x) || ('/api/jbb' + pathname).startsWith(x))) {
-        const auth = await getServerAuthState();
+        const auth = await getServerAuthCookie();
         if (auth && auth.accessToken) {
             (init.headers as any).Authorization = "Bearer " + auth.accessToken;
             const res = await fetch(url, init);
@@ -218,36 +147,19 @@ export async function fetchSSR(url: string, init?: RequestInit) {
                     (init.headers as any).Authorization = "Bearer " + resObj.token;
 
                     //cập nhât token mới
-                    const _token = await encode({
-                        secret: process.env.NEXTAUTH_SECRET!,
-                        token: {
-                            name: auth.name,
-                            email: auth.email,
-                            id: auth.id,
-                            lastName: auth.lastName,
-                            firstName: auth.firstName,
-                            accessToken: resObj.token,
-                        },
-                    });
-
-                    cookieStore.set("auth-token", _token, {
-                        httpOnly: true,
-                        secure: process.env.NODE_ENV === "production",
-                        path: "/",
-                        maxAge: 60 * 60 * 24 * 7,
-                        sameSite: "strict"
-                    });
+                    await setAuthCookie(cookieStore, {
+                        name: auth.name,
+                        email: auth.email,
+                        id: auth.id,
+                        lastName: auth.lastName,
+                        firstName: auth.firstName,
+                        accessToken: resObj.token
+                    })
 
                     return fetch(url, init);
                 } else {
                     // xóa cookie
-                    cookieStore.set("auth-token", "", {
-                        httpOnly: true,
-                        secure: process.env.NODE_ENV === "production",
-                        path: "/",
-                        expires: new Date(0),
-                        sameSite: "strict"
-                    });
+                    await deleteAuthCookie(cookieStore);
                     const headersList = await headers();
                     const host = headersList.get("host");
                     const protocol = headersList.get("x-forwarded-proto") || "http";

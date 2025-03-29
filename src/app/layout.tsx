@@ -1,7 +1,7 @@
 import '@/app/globals.scss'
-import { getServerAuthState } from '@/middleware/auth'
 import { initState } from '@/store/initState'
 import { ReduxProvider } from '@/store/providers'
+import { getServerAuthCookie } from '@/utils/auth-cookie'
 import { Viewport } from 'next'
 
 export const viewport: Viewport = {
@@ -17,7 +17,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const session = await getServerAuthState()
+  const session = await getServerAuthCookie()
   const _initState = await initState()
   if (session) {
     _initState.app.user = {
